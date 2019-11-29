@@ -150,11 +150,11 @@ class myRequests:
                     bookinfo.append(bookDetail[1])
                     authorinfo.append(bookDetail[2])
                     cnt-=1
-            bookinsert_sql='''INSERT IGNORE INTO book_info (
-                ISBN, BookName, Publisher, Ptime, Price, Score, ChineseIntro, EnglishIntro
+            bookinsert_sql='''INSERT IGNORE INTO book (
+                ISBN, Title, Publisher, Ptime, Price, Score, ChineseIntro, EnglishIntro
             ) VALUES (%s,%s,%s,%s,%s,%s,%s,%s)'''
             authorinsert_sql='''INSERT IGNORE INTO author (
-                ISBN, Writer
+                ISBN, Author
             ) VALUES (%s,%s)'''
             with self.conn.cursor() as cursor:
                 cursor.executemany(bookinsert_sql, bookinfo)
