@@ -13,12 +13,9 @@ def select(sql_query):
     data = cur.fetchall()
     return data
 
-
 def insert(sql_query):
     cur = con.cursor()
-    print("OK3")
     cur.execute(sql_query)
-    print("OK4")
 
 
 @app.route('/')
