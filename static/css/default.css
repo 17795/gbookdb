@@ -1,0 +1,158 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
+img {
+    border: none;
+    outline: none;
+}
+
+a {
+    text-decoration: none;
+    outline: none;
+    color: white;
+}
+
+a:hover {
+    background-color: white;
+    color: black;
+}
+
+html {
+    height: 100%;
+    width: 100%;
+}
+
+body {
+    font: 12px '微软雅黑', 'Microsoft Yahei', Helvetica Neue, Hiragino Sans GB, '宋体', 'simsun', '黑体', Arial, sans-serif;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    user-select: none;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    width: 100%;
+    background-color: transparent;
+    background-image: url(../img/bg.jpg);
+    background-size: 100% 100%;
+    background-attachment: fixed
+}
+
+input {
+    background-color: transparent;
+}
+
+input::-webkit-input-placeholder,
+textarea::-webkit-input-placeholder {
+    color: #fff;
+}
+
+input:-moz-placeholder,
+textarea:-moz-placeholder {
+    color: #fff;
+}
+
+input::-moz-placeholder,
+textarea::-moz-placeholder {
+    color: #fff;
+}
+
+input:-ms-input-placeholder,
+textarea:-ms-input-placeholder {
+    color: #fff;
+}
+
+header {
+    flex: 0 0 auto;
+    height: 60px;
+    background-color: transparent;
+    line-height: 60px;
+    font-size: 14px;
+    color: rgba(255, 255, 255, 0.7);
+}
+
+header .hd-main {
+    width: 960px;
+    margin: 0 auto;
+    position: relative;
+}
+
+header .hd-main .logo {
+    display: block;
+    background-color: transparent;
+    background-image: url(../img/logo.png);
+    background-size: 100% 100%;
+    float: left;
+    height: 40px;
+    width: 40px;
+    margin: 10px;
+    padding: 0;
+}
+
+header .hd-main h1 {
+    float: left;
+    margin: 0;
+    text-shadow: -2px, -2px, black;
+}
+
+header nav {
+    float: right;
+    margin: 0;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}
+
+header nav a {
+    font-size: 20px;
+    color: rgba(255, 255, 255, 0.7);
+    margin: 0 10px;
+}
+
+table{
+    /* Border styles */
+    border-top-width: 1px;
+    border-top-style: solid;
+    border-top-color: rgb(230, 189, 189);
+}
+
+table .mytable{
+    border-top-width: 1px;
+    border-top-style: solid;
+    border-top-color: rgb(230, 189, 189);
+}
+
+table .mytable td, th {
+    padding: 5px 10px;
+    font-size: 12px;
+    font-family: Verdana;
+    color: rgb(177, 106, 104);
+}
+
+table .mytable tr:nth-child(even) {
+    background: rgb(238, 211, 210)
+}
+table .mytable tr:nth-child(odd) {
+    background: #FFF
+}
+</style>
+
+footer {
+    flex: 0 0 auto;
+    background-color: rgba(0, 0, 0, 0.4);
+    font-size: 12px;
+    color: rgba(255, 255, 255, 0.7);
+}
+
+footer .ft-main {
+    width: 960px;
+    margin: 0 auto;
+    padding: 10px;
+    position: relative;
+}
+
+footer .info {
+    text-align: center;
+    margin: 10px;
+}
