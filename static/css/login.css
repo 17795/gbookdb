@@ -1,0 +1,54 @@
+.content {
+    flex: 1 0 auto;
+    width: 960px;
+    margin: 0 auto;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
+    align-items: center;
+}
+
+.content .title {
+    margin: 60px;
+    font-size: 60px;
+    color: white;
+}
+
+.content .login {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.content .usr-info {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.content .input-txt {
+    font-size: 15px;
+    color: white;
+    text-align: center;
+    width: 560px;
+    height: 40px;
+    border-radius: 25px;
+    border: 1px rgb(200, 200, 200, 0.9) solid;
+    margin: 10px;
+    z-index: 5;
+}
+   
+.content .login-setting {
+    width: 100%;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.content .login-setting a {
+    font-size: 15px;
+    color: white;
+    text-align: center;
+    margin: 10px;
+}

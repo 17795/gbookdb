@@ -1,0 +1,194 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="keywords" content="jquery,ui,easy,easyui,web">
+    <meta name="description" content="easyui help you build your web page easily!">
+    <title>Bookstore管理-stock</title>
+    <link rel="stylesheet" type="text/css" href="http://www.w3cschool.cc/try/jeasyui/themes/default/easyui.css">
+    <link rel="stylesheet" type="text/css" href="http://www.w3cschool.cc/try/jeasyui/themes/icon.css">
+    <link rel="stylesheet" type="text/css" href="http://www.w3cschool.cc/try/jeasyui/demo/demo.css">
+    <style type="text/css">
+        #fm {
+            margin: 0;
+            padding: 10px 30px;
+        }
+
+        .ftitle {
+            font-size: 14px;
+            font-weight: bold;
+            color: #666;
+            padding: 5px 0;
+            margin-bottom: 10px;
+            border-bottom: 1px solid #ccc;
+        }
+
+        .fitem {
+            margin-bottom: 5px;
+        }
+
+        .fitem label {
+            display: inline-block;
+            width: 80px;
+        }
+    </style>
+    <script type="text/javascript" src="http://code.jquery.com/jquery-1.6.min.js"></script>
+    <script type="text/javascript" src="http://www.w3cschool.cc/try/jeasyui/jquery.easyui.min.js"></script>
+    <script type="text/javascript">
+        var url;
+
+        function newEntry() {
+            $('#dlg1').dialog('open').dialog('setTitle', 'New Entry');
+            $('#fm').form('clear');
+            url = 'http://127.0.0.1:5000/show_order/newEntry';
+        }
+
+        function editEntry() {
+            $('#dlg2').dialog('open').dialog('setTitle', 'Edit Entry');
+            $('#fm').form('clear');
+            url = 'http://127.0.0.1:5000/show_order/editEntry';
+        }
+
+        function removeEntry() {
+            $('#dlg3').dialog('open').dialog('setTitle', 'Remove Entry');
+            $('#fm').form('clear');
+            url = 'http://127.0.0.1:5000/show_order/removeEntry';
+        }
+    </script>
+</head>
+
+<body class="easyui-layout">
+    <div data-options="region:'north',title:'欢迎！'" style="height:100px;">
+        <h1 align="center" style="font-size:x-large;">Bookstore管理系统</h1>
+    </div>
+
+    <div region="west" split="true" title="查询内容" style="width:150px;">
+        <p style="padding:5px;margin:0;">选择:</p>
+        <ul>
+            <li><a href="http://127.0.0.1:5000/show_stock/begin">库存管理</a></li>
+            <li><a href="http://127.0.0.1:5000/show_order/begin">订单管理</a></li>
+            <li><a href="http://127.0.0.1:5000/show_VIP/begin">会员管理</a></li>
+            <li><a href="http://127.0.0.1:5000/show_book/begin">图书管理</a></li>
+        </ul>
+    </div>
+
+    <div data-options="region:'center',title:'具体信息'" style="padding:5px;background:#eee;">
+        <table id="dg" title="订单信息" class="easyui-datagrid" style="width:1000px;height:500px"
+            url="http://127.0.0.1:5000/show_order/query" toolbar="#toolbar" pagination="false" rownumbers="true"
+            fitColumns="true" singleSelect="true">
+            <thead>
+                <tr>
+                    <th field="ID" width="50">ID</th>
+                    <th field="ISBN" width="100">ISBN</th>
+                    <th field="Branch" width="50">Branch</th>
+                    <th field="Quantity" width="50">Quantity</th>
+                    <th field="VIP_no" width="50">VIP_no</th>
+                </tr>
+            </thead>
+        </table>
+        <div id="toolbar">
+            <a href="#" class="easyui-linkbutton" iconCls="icon-add" plain="true" onclick="newEntry()">New Entry</a>
+            <a href="#" class="easyui-linkbutton" iconCls="icon-edit" plain="true" onclick="editEntry()">Edit Entry</a>
+            <a href="#" class="easyui-linkbutton" iconCls="icon-remove" plain="true" onclick="removeEntry()">Remove
+                Entry</a>
+        </div>
+    </div>
+
+    <div id="dlg1" class="easyui-dialog" style="width:400px;height:280px;padding:10px 20px" closed="true"
+        buttons="#dlg-buttons">
+        <div class="ftitle">Entry Information</div>
+        <form id="fm" action='http://127.0.0.1:5000/show_order/newEntry' method="post">
+            <div class="fitem">
+                <label>ID:</label>
+                <input name="ID" class="easyui-validatebox" required="true">
+            </div>
+            <div class="fitem">
+                <label>ISBN:</label>
+                <input name="ISBN" class="easyui-validatebox" required="true">
+            </div>
+            <div class="fitem">
+                <label>Branch:</label>
+                <input name="Branch" class="easyui-validatebox" required="true">
+            </div>
+            <div class="fitem">
+                <label>Quantity:</label>
+                <input name="Quantity">
+            </div>
+            <div class="fitem">
+                <label>VIP_no:</label>
+                <input name="VIP_no">
+            </div>
+            <div class="fitem">
+                <input type=submit>
+            </div>
+            <div id="dlg-buttons">
+                <a href="#" class="easyui-linkbutton" iconCls="icon-cancel"
+                    onclick="javascript:$('#dlg1').dialog('close')">Cancel</a>
+            </div>
+        </form>
+    </div>
+
+    <div id="dlg2" class="easyui-dialog" style="width:400px;height:280px;padding:10px 20px" closed="true"
+        buttons="#dlg-buttons">
+        <div class="ftitle">Entry Information</div>
+        <form id="fm" action='http://127.0.0.1:5000/show_order/editEntry' method="post">
+            <div class="fitem">
+                <label>ID:</label>
+                <input name="ID" class="easyui-validatebox" required="true">
+            </div>
+            <div class="fitem">
+                <label>ISBN:</label>
+                <input name="ISBN" class="easyui-validatebox" required="true">
+            </div>
+            <div class="fitem">
+                <label>Branch:</label>
+                <input name="Branch" class="easyui-validatebox" required="true">
+            </div>
+            <div class="fitem">
+                <label>Quantity:</label>
+                <input name="Quantity">
+            </div>
+            <div class="fitem">
+                <label>VIP_no:</label>
+                <input name="VIP_no">
+            </div>
+            <div class="fitem">
+                <input type=submit>
+            </div>
+            <div id="dlg-buttons">
+                <a href="#" class="easyui-linkbutton" iconCls="icon-cancel"
+                    onclick="javascript:$('#dlg2').dialog('close')">Cancel</a>
+            </div>
+        </form>
+    </div>
+
+    <div id="dlg3" class="easyui-dialog" style="width:400px;height:280px;padding:10px 20px" closed="true"
+        buttons="#dlg-buttons">
+        <div class="ftitle">Entry Information</div>
+        <form id="fm" action='http://127.0.0.1:5000/show_order/removeEntry' method="post">
+            <div class="fitem">
+                <label>ID:</label>
+                <input name="ID" class="easyui-validatebox" required="true">
+            </div>
+            <div class="fitem">
+                <label>ISBN:</label>
+                <input name="ISBN" class="easyui-validatebox" required="true">
+            </div>
+            <div class="fitem">
+                <label>Branch:</label>
+                <input name="Branch" class="easyui-validatebox" required="true">
+            </div>
+            <div class="fitem">
+                <input type=submit>
+            </div>
+            <div id="dlg-buttons">
+                <a href="#" class="easyui-linkbutton" iconCls="icon-cancel"
+                    onclick="javascript:$('#dlg3').dialog('close')">Cancel</a>
+            </div>
+        </form>
+    </div>
+
+</body>
+
+</html>
