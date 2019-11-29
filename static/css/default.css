@@ -136,7 +136,6 @@ table .mytable tr:nth-child(even) {
 table .mytable tr:nth-child(odd) {
     background: #FFF
 }
-</style>
 
 footer {
     flex: 0 0 auto;
