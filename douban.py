@@ -151,7 +151,7 @@ class myRequests:
                     authorinfo.append(bookDetail[2])
                     cnt-=1
             bookinsert_sql='''INSERT IGNORE INTO book (
-                ISBN, Title, Publisher, Ptime, Price, Score, ChineseIntro, EnglishIntro
+                ISBN, BookName, Publisher, Ptime, Price, Score, ChineseIntro, EnglishIntro
             ) VALUES (%s,%s,%s,%s,%s,%s,%s,%s)'''
             authorinsert_sql='''INSERT IGNORE INTO author (
                 ISBN, Author

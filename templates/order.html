@@ -76,4 +76,82 @@
         </div>
     </footer>
 
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge, Chrome=1">
+    <link rel="icon" href="icon.ico" type="image/x-icon">
+    <title>Bookstore</title>
+    <meta name="description" content="Bookstore-index">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- base 指示默认跳转链接，该链接暂时无效-->
+    <base href="index.html" target="_parent">
+    <link rel="stylesheet" type="text/css" href="../css/default.css">
+    <link rel="stylesheet" type="text/css" href="../css/query.css">
+    <link rel="stylesheet" type="text/css" href="../css/table.css">
+    
+</head>
+
+<body>
+    <header>
+        <div class="hd-main">
+            <div class="logo"></div>
+            <h1>Bookstore</h1>
+            <nav>
+                <a href="index.html">&nbsp;首页&nbsp;</a>
+                <a href="page/LogIn.html">&nbsp;登录/注册&nbsp;</a>
+                <a href="index.html#news">&nbsp;新书推荐&nbsp;</a>
+                <a href="index.html#help">&nbsp;帮助中心&nbsp;</a>
+                <a href="index.html#about">&nbsp;联系我们&nbsp;</a>
+            </nav>
+        </div>
+    </header>
+    <div class="content">
+        <div class="hd">
+            <h1 class="logo">Bookstore</h1>
+            <div class="search">
+                <form class="search-form" action="/search_book" method="POST">
+                    <div class="search-switch">
+                        <input type="radio" name="search_case" id="book_name" value="book_name" checked="checked" >
+                        <label for="book_name">书名</label>
+                        <input type="radio" name="search_case" id="author" value="author">
+                        <label for="author">作者</label>
+                        <input type="radio" name="search_case" id="stock" value="stock">
+                        <label for="stock">库存</label>
+                        <input type="radio" name="search_case" id="user" value="user">
+                        <label for="user">顾客</label>
+                        <input type="radio" name="search_case" id="order" value="order">
+                        <label for="order">订单</label>
+                        <input type="radio" name="search_case" id="ch_book_info" value="ch_book_info">
+                        <label for="ch_book_info">中文关键字</label>
+                        <input type="radio" name="search_case" id="en_book_info" value="en_book_info">
+                        <label for="en_book_info">英文关键字</label>
+                    </div>
+                    <div class="search-box">
+                        <input class="input-btn" id="search-btn" name="search_btn" type="button" value="">
+                        <input class="input-txt" id="search-txt" name="query_txt" type="text" tabindex="1"
+                            placeholder= {{ query_txt |safe}}>
+                    </div>
+                </form>
+            </div>
+            </div>
+        <div class="leftcolumn">
+            {{ content |safe}}
+        </div>
+        <div class="rightcolumn">
+            <!--这里显示推荐内容，暂时未完成-->
+        </div>
+    </div>
+    <footer>
+        <div class="ft-main">
+            <div class="info">
+                <!-- 电话、邮箱暂时无效 -->
+                <section>服务热线：010-12345678 | Email：<a href="mailto:bookstore@126.com">bookstore@126.com</a></section>
+                <section>© <a href="index.html">Bookstore</a>&nbsp;版权所有，侵权必究</section>
+            </div>
+        </div>
+    </footer>
+
 </body>
