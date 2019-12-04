@@ -4,7 +4,7 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <meta name="keywords" content="jquery,ui,easy,easyui,web">
     <meta name="description" content="easyui help you build your web page easily!">
-    <title>Bookstore管理-book</title>
+    <title>Bookstore管理-图书信息</title>
     <link rel="stylesheet" type="text/css" href="http://www.w3cschool.cc/try/jeasyui/themes/default/easyui.css">
     <link rel="stylesheet" type="text/css" href="http://www.w3cschool.cc/try/jeasyui/themes/icon.css">
     <link rel="stylesheet" type="text/css" href="http://www.w3cschool.cc/try/jeasyui/demo/demo.css">
@@ -74,11 +74,12 @@
     <div region="west" split="true" title="查询内容" style="width:150px;">
             <p style="padding:5px;margin:0;">选择:</p>
             <ul>
-                <li><a href="http://127.0.0.1:5000/show_stock/begin">库存管理</a></li>
-                <li><a href="http://127.0.0.1:5000/show_order/begin">订单管理</a></li>
-                <li><a href="http://127.0.0.1:5000/show_customer/begin">会员管理</a></li>
                 <li><a href="http://127.0.0.1:5000/show_book/begin">图书管理</a></li>
                 <li><a href="http://127.0.0.1:5000/show_author/begin">作者管理</a></li>
+                <li><a href="http://127.0.0.1:5000/show_stock/begin">库存管理</a></li>
+                <li><a href="http://127.0.0.1:5000/show_branch/begin">分店管理</a></li>
+                <li><a href="http://127.0.0.1:5000/show_order/begin">订单管理</a></li>
+                <li><a href="http://127.0.0.1:5000/show_customer/begin">会员管理</a></li>
             </ul>
     </div>
 
@@ -90,27 +91,29 @@
         <thead>
             <tr>
                 <th field="ISBN" width="50">ISBN</th>
-                <th field="BookName" width="50">BookName</th>
-                <th field="Publisher" width="50">Publisher</th>
-                <th field="Ptime" width="50">Ptime</th>
-                <th field="Price" width="50">Price</th>
-                <th formatter = "formatLongText" field="ChineseIntro" width="50">ChineseIntro</th>
-                <th formatter = "formatLongText" field="EnglishIntro" width="50">EnglishIntro</th>
-                <th field="Score" width="50">Score</th>
+                <th field="Title" width="50">书名</th>
+                <th formatter = "formatLongText" field="AuthorName" width="50">作者</th>
+                <th formatter = "formatLongText" field="Publisher" width="50">出版社</th>
+                <th field="Ptime" width="50">出版日期</th>
+                <th field="Price" width="25">价格</th>
+                <th formatter = "formatLongText" field="ChineseIntro" width="100">中文简介</th>
+                <th formatter = "formatLongText" field="EnglishIntro" width="50">英文简介</th>
+                <th field="Score" width="25">豆瓣评分</th>
+                <th formatter = "formatLongText" field="Tag" width="50">标签</th>
             </tr>
         </thead>
     </table>
     <div id="toolbar">
-        <a href="#" class="easyui-linkbutton" iconCls="icon-add" plain="true" onclick="window.location.href = 'http://127.0.0.1:5000/show_book/begin'">All Entry</a>
-        <a href="#" class="easyui-linkbutton" iconCls="icon-add" plain="true" onclick="newEntry()">New Entry</a>
-        <a href="#" class="easyui-linkbutton" iconCls="icon-edit" plain="true" onclick="editEntry()">Edit Entry</a>
-        <a href="#" class="easyui-linkbutton" iconCls="icon-remove" plain="true" onclick="removeEntry()">Remove Entry</a>
-        <a href="#" class="easyui-linkbutton" iconCls="icon-remove" plain="true" onclick="searchEntry()">Search Entry</a>
-        <a href="#" class="easyui-linkbutton" iconCls="icon-remove" plain="true" onclick="searchSQL()">Search by SQL</a>
+        <a href="#" class="easyui-linkbutton" iconCls="icon-add" plain="true" onclick="window.location.href = 'http://127.0.0.1:5000/show_book/begin'">全部图书</a>
+        <a href="#" class="easyui-linkbutton" iconCls="icon-add" plain="true" onclick="newEntry()">添加图书</a>
+        <a href="#" class="easyui-linkbutton" iconCls="icon-edit" plain="true" onclick="editEntry()">修改图书</a>
+        <a href="#" class="easyui-linkbutton" iconCls="icon-remove" plain="true" onclick="removeEntry()">删除图书</a>
+        <a href="#" class="easyui-linkbutton" iconCls="icon-remove" plain="true" onclick="searchEntry()">查询图书</a>
+        <a href="#" class="easyui-linkbutton" iconCls="icon-remove" plain="true" onclick="searchSQL()">SQL查询</a>
     </div>
     </div>
 
-    <div id="dlg1" class="easyui-dialog" style="width:400px;height:385px;padding:10px 20px;"
+    <div id="dlg1" class="easyui-dialog" style="width:400px;height:440px;padding:10px 20px;"
             closed="true" buttons="#dlg-buttons">
         <div class="ftitle">Entry Information</div>
         <form id="fm"  action='http://127.0.0.1:5000/show_book/newEntry' method="post">
@@ -119,43 +122,51 @@
                 <input name="ISBN" class="easyui-validatebox" required="true">
             </div>
             <div class="fitem">
-                <label>BookName:</label>
-                <input name="BookName" class="easyui-validatebox" required="true">
+                <label>书名:</label>
+                <input name="Title" class="easyui-validatebox" required="true">
             </div>
             <div class="fitem">
-                <label>Publisher:</label>
+                <label>作者:</label>
+                <input name="AuthorName" class="easyui-validatebox" required="true">
+            </div>
+            <div class="fitem">
+                <label>出版社:</label>
                 <input name="Publisher" class="easyui-validatebox" required="true">
             </div>
             <div class="fitem">
-                <label>Ptime:</label>
+                <label>出版日期:</label>
                 <input name="Ptime" class="easyui-validatebox" required="true">
             </div>
             <div class="fitem">
-                <label>Price:</label>
+                <label>价格:</label>
                 <input name="Price" class="easyui-validatebox" required="true">
             </div>
             <div class="fitem">
-                <label>ChineseIntro:</label>
+                <label>中文简介:</label>
                 <input name="ChineseIntro" class="easyui-validatebox" required="true">
             </div>
             <div class="fitem">
-                <label>EnglishIntro:</label>
+                <label>英文简介:</label>
                 <input name="EnglishIntro" class="easyui-validatebox" required="true">
             </div>
             <div class="fitem">
-                <label>Score:</label>
+                <label>豆瓣评分:</label>
                 <input name="Score" class="easyui-validatebox" required="true">
+            </div>
+            <div class="fitem">
+                <label>标签:</label>
+                <input name="Tag">
             </div>
             <div class="fitem">
                 <input type=submit>
             </div>
                 <div id="dlg-buttons">
-                    <a href="#" class="easyui-linkbutton" iconCls="icon-cancel" onclick="javascript:$('#dlg1').dialog('close')">Cancel</a>
+                    <a href="#" class="easyui-linkbutton" iconCls="icon-cancel" onclick="javascript:$('#dlg1').dialog('close')">取消</a>
                 </div>
         </form>
     </div>
 
-    <div id="dlg2" class="easyui-dialog" style="width:400px;height:385px;padding:10px 20px"
+    <div id="dlg2" class="easyui-dialog" style="width:400px;height:410px;padding:10px 20px"
             closed="true" buttons="#dlg-buttons">
         <div class="ftitle">Entry Information</div>
         <form id="fm"  action='http://127.0.0.1:5000/show_book/editEntry' method="post">
@@ -164,38 +175,42 @@
                 <input name="ISBN" class="easyui-validatebox" required="true">
             </div>
             <div class="fitem">
-                <label>BookName:</label>
-                <input name="BookName">
+                <label>书名:</label>
+                <input name="Title">
             </div>
             <div class="fitem">
-                <label>Publisher:</label>
+                <label>出版社:</label>
                 <input name="Publisher">
             </div>
             <div class="fitem">
-                <label>Ptime:</label>
+                <label>出版日期:</label>
                 <input name="Ptime">
             </div>
             <div class="fitem">
-                <label>Price:</label>
+                <label>价格:</label>
                 <input name="Price">
             </div>
             <div class="fitem">
-                <label>ChineseIntro:</label>
+                <label>中文简介:</label>
                 <input name="ChineseIntro">
             </div>
             <div class="fitem">
-                <label>EnglishIntro:</label>
+                <label>英文简介:</label>
                 <input name="EnglishIntro">
             </div>
             <div class="fitem">
-                <label>Score:</label>
+                <label>豆瓣评分:</label>
                 <input name="Score">
+            </div>
+            <div class="fitem">
+                <label>标签:</label>
+                <input name="Tag">
             </div>
             <div class="fitem">
                 <input type=submit>
             </div>
                 <div id="dlg-buttons">
-                    <a href="#" class="easyui-linkbutton" iconCls="icon-cancel" onclick="javascript:$('#dlg2').dialog('close')">Cancel</a>
+                    <a href="#" class="easyui-linkbutton" iconCls="icon-cancel" onclick="javascript:$('#dlg2').dialog('close')">取消</a>
                 </div>
         </form>
     </div>
@@ -212,7 +227,7 @@
                 <input type=submit>
             </div>
                 <div id="dlg-buttons">
-                    <a href="#" class="easyui-linkbutton" iconCls="icon-cancel" onclick="javascript:$('#dlg3').dialog('close')">Cancel</a>
+                    <a href="#" class="easyui-linkbutton" iconCls="icon-cancel" onclick="javascript:$('#dlg3').dialog('close')">取消</a>
                 </div>
         </form>
     </div>
@@ -229,7 +244,7 @@
                 <input type=submit>
             </div>
                 <div id="dlg-buttons">
-                    <a href="#" class="easyui-linkbutton" iconCls="icon-cancel" onclick="javascript:$('#dlg4').dialog('close')">Cancel</a>
+                    <a href="#" class="easyui-linkbutton" iconCls="icon-cancel" onclick="javascript:$('#dlg4').dialog('close')">取消</a>
                 </div>
         </form>
     </div>
@@ -246,7 +261,7 @@
                 <input type=submit>
             </div>
                 <div id="dlg-buttons">
-                    <a href="#" class="easyui-linkbutton" iconCls="icon-cancel" onclick="javascript:$('#dlg5').dialog('close')">Cancel</a>
+                    <a href="#" class="easyui-linkbutton" iconCls="icon-cancel" onclick="javascript:$('#dlg5').dialog('close')">取消</a>
                 </div>
         </form>
     </div>

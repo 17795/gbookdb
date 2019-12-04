@@ -4,7 +4,7 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <meta name="keywords" content="jquery,ui,easy,easyui,web">
     <meta name="description" content="easyui help you build your web page easily!">
-    <title>Bookstore管理-order</title>
+    <title>Bookstore管理-订单信息</title>
     <link rel="stylesheet" type="text/css" href="http://www.w3cschool.cc/try/jeasyui/themes/default/easyui.css">
     <link rel="stylesheet" type="text/css" href="http://www.w3cschool.cc/try/jeasyui/themes/icon.css">
     <link rel="stylesheet" type="text/css" href="http://www.w3cschool.cc/try/jeasyui/demo/demo.css">
@@ -33,20 +33,20 @@
     <script type="text/javascript" src="http://www.w3cschool.cc/try/jeasyui/jquery.easyui.min.js"></script>
     <script type="text/javascript">
         var url;
-        function newEntry(){
-            $('#dlg1').dialog('open').dialog('setTitle','New Entry');
+        function processEntry(){
+            $('#dlg1').dialog('open').dialog('setTitle','Process Entry');
             $('#fm').form('clear');
-            url = 'http://127.0.0.1:5000/show_order/newEntry';
+            url = 'http://127.0.0.1:5000/show_order/processEntry';
         }
-        function editEntry() {
-            $('#dlg2').dialog('open').dialog('setTitle','Edit Entry');
+        function returnEntry() {
+            $('#dlg2').dialog('open').dialog('setTitle','Return Entry');
             $('#fm').form('clear');
-            url = 'http://127.0.0.1:5000/show_order/editEntry';
+            url = 'http://127.0.0.1:5000/show_order/returnEntry';
         }
-        function removeEntry(){
+        function replyEntry(){
             $('#dlg3').dialog('open').dialog('setTitle','Remove Entry');
             $('#fm').form('clear');
-            url = 'http://127.0.0.1:5000/show_order/removeEntry';
+            url = 'http://127.0.0.1:5000/show_order/replyEntry';
         }
         function searchEntry(){
             $('#dlg4').dialog('open').dialog('setTitle','Search Entry');
@@ -58,6 +58,9 @@
             $('#fm').form('clear');
             url = 'http://127.0.0.1:5000/show_order/searchSQL';
         }
+        function formatLongText(value){
+            return "<span title='" + value + "'>" + value + "</span>";  
+        }
     </script>
 </head>
 <body  class="easyui-layout">
@@ -68,11 +71,12 @@
     <div region="west" split="true" title="查询内容" style="width:150px;">
             <p style="padding:5px;margin:0;">选择:</p>
             <ul>
-                <li><a href="http://127.0.0.1:5000/show_stock/begin">库存管理</a></li>
-                <li><a href="http://127.0.0.1:5000/show_order/begin">订单管理</a></li>
-                <li><a href="http://127.0.0.1:5000/show_customer/begin">会员管理</a></li>
                 <li><a href="http://127.0.0.1:5000/show_book/begin">图书管理</a></li>
                 <li><a href="http://127.0.0.1:5000/show_author/begin">作者管理</a></li>
+                <li><a href="http://127.0.0.1:5000/show_stock/begin">库存管理</a></li>
+                <li><a href="http://127.0.0.1:5000/show_branch/begin">分店管理</a></li>
+                <li><a href="http://127.0.0.1:5000/show_order/begin">订单管理</a></li>
+                <li><a href="http://127.0.0.1:5000/show_customer/begin">会员管理</a></li>
             </ul>
     </div>
 
@@ -83,136 +87,97 @@
             rownumbers="true" fitColumns="true" singleSelect="true">
         <thead>
             <tr>
-                <th field="ID" width="50">ID</th>
-                <th field="ISBN" width="100">ISBN</th>
-                <th field="Branch" width="50">Branch</th>
-                <th field="Quantity" width="50">Quantity</th>
-                <th field="CustomerID" width="50">CustomerID</th>
+                <th field="OrderID" width="25">订单编号</th>
+                <th field="ISBN" width="50">ISBN</th>
+                <th field="Branch" width="25">分店编号</th>
+                <th field="Quantity" width="25">数量</th>
+                <th field="Discount" width="25">折扣</th>
+                <th field="CustomerID" width="25">会员编号</th>
+                <th field="Date" width="50">日期</th>
+                <th formatter = "formatLongText" field="Message" width="100">客户留言</th>
+                <th formatter = "formatLongText" field="Reply" width="100">回复</th>
+                <th field="Status" width="50">状态</th>
             </tr>
         </thead>
     </table>
     <div id="toolbar">
-        <a href="#" class="easyui-linkbutton" iconCls="icon-add" plain="true" onclick="window.location.href = 'http://127.0.0.1:5000/show_order/begin'">All Entry</a>
-        <a href="#" class="easyui-linkbutton" iconCls="icon-add" plain="true" onclick="newEntry()">New Entry</a>
-        <a href="#" class="easyui-linkbutton" iconCls="icon-edit" plain="true" onclick="editEntry()">Edit Entry</a>
-        <a href="#" class="easyui-linkbutton" iconCls="icon-remove" plain="true" onclick="removeEntry()">Remove Entry</a>
-        <a href="#" class="easyui-linkbutton" iconCls="icon-remove" plain="true" onclick="searchEntry()">Search Entry</a>
-        <a href="#" class="easyui-linkbutton" iconCls="icon-remove" plain="true" onclick="searchSQL()">Search by SQL</a>
+        <a href="#" class="easyui-linkbutton" iconCls="icon-add" plain="true" onclick="window.location.href = 'http://127.0.0.1:5000/show_order/begin'">全部订单</a>
+        <a href="#" class="easyui-linkbutton" iconCls="icon-add" plain="true" onclick="processEntry()">订单出货</a>
+        <a href="#" class="easyui-linkbutton" iconCls="icon-edit" plain="true" onclick="returnEntry()">订单退货</a>
+        <a href="#" class="easyui-linkbutton" iconCls="icon-remove" plain="true" onclick="replyEntry()">回复消息</a>
+        <a href="#" class="easyui-linkbutton" iconCls="icon-remove" plain="true" onclick="searchEntry()">查询订单</a>
+        <a href="#" class="easyui-linkbutton" iconCls="icon-remove" plain="true" onclick="searchSQL()">SQL查询</a>
     </div>
     </div>
 
-    <div id="dlg1" class="easyui-dialog" style="width:400px;height:310px;padding:10px 20px"
+    <div id="dlg1" class="easyui-dialog" style="width:400px;height:210px;padding:10px 20px"
             closed="true" buttons="#dlg-buttons">
         <div class="ftitle">Entry Information</div>
-        <form id="fm"  action='http://127.0.0.1:5000/show_order/newEntry' method="post">
+        <form id="fm"  action='http://127.0.0.1:5000/show_order/processEntry' method="post">
             <div class="fitem">
-                <label>ID:</label>
-                <input name="ID" class="easyui-validatebox" required="true">
-            </div>
-            <div class="fitem">
-                <label>ISBN:</label>
-                <input name="ISBN" class="easyui-validatebox" required="true">
-            </div>
-            <div class="fitem">
-                <label>Branch:</label>
-                <input name="Branch" class="easyui-validatebox" required="true">
-            </div>
-            <div class="fitem">
-                <label>Quantity:</label>
-                <input name="Quantity">
-            </div>
-            <div class="fitem">
-                <label>CustomerID:</label>
-                <input name="CustomerID">
+                <label>编号:</label>
+                <input name="OrderID" class="easyui-validatebox" required="true">
             </div>
             <div class="fitem">
                 <input type=submit>
             </div>
                 <div id="dlg-buttons">
-                    <a href="#" class="easyui-linkbutton" iconCls="icon-cancel" onclick="javascript:$('#dlg1').dialog('close')">Cancel</a>
+                    <a href="#" class="easyui-linkbutton" iconCls="icon-cancel" onclick="javascript:$('#dlg1').dialog('close')">取消</a>
                 </div>
         </form>
     </div>
 
-    <div id="dlg2" class="easyui-dialog" style="width:400px;height:310px;padding:10px 20px"
+    <div id="dlg2" class="easyui-dialog" style="width:400px;height:210px;padding:10px 20px"
             closed="true" buttons="#dlg-buttons">
         <div class="ftitle">Entry Information</div>
-        <form id="fm"  action='http://127.0.0.1:5000/show_order/editEntry' method="post">
+        <form id="fm"  action='http://127.0.0.1:5000/show_order/returnEntry' method="post">
             <div class="fitem">
-                <label>ID:</label>
-                <input name="ID" class="easyui-validatebox" required="true">
-            </div>
-            <div class="fitem">
-                <label>ISBN:</label>
-                <input name="ISBN" class="easyui-validatebox" required="true">
-            </div>
-            <div class="fitem">
-                <label>Branch:</label>
-                <input name="Branch" class="easyui-validatebox" required="true">
-            </div>
-            <div class="fitem">
-                <label>Quantity:</label>
-                <input name="Quantity">
-            </div>
-            <div class="fitem">
-                <label>CustomerID:</label>
-                <input name="CustomerID">
+                <label>编号:</label>
+                <input name="OrderID" class="easyui-validatebox" required="true">
             </div>
             <div class="fitem">
                 <input type=submit>
             </div>
                 <div id="dlg-buttons">
-                    <a href="#" class="easyui-linkbutton" iconCls="icon-cancel" onclick="javascript:$('#dlg2').dialog('close')">Cancel</a>
+                    <a href="#" class="easyui-linkbutton" iconCls="icon-cancel" onclick="javascript:$('#dlg2').dialog('close')">取消</a>
                 </div>
         </form>
     </div>
 
-    <div id="dlg3" class="easyui-dialog" style="width:400px;height:260px;padding:10px 20px"
+    <div id="dlg3" class="easyui-dialog" style="width:400px;height:230px;padding:10px 20px"
             closed="true" buttons="#dlg-buttons">
         <div class="ftitle">Entry Information</div>
-        <form id="fm"  action='http://127.0.0.1:5000/show_order/removeEntry' method="post">
+        <form id="fm"  action='http://127.0.0.1:5000/show_order/replyEntry' method="post">
             <div class="fitem">
-                <label>ID:</label>
-                <input name="ID" class="easyui-validatebox" required="true">
+                <label>编号:</label>
+                <input name="OrderID" class="easyui-validatebox" required="true">
             </div>
             <div class="fitem">
-                <label>ISBN:</label>
-                <input name="ISBN" class="easyui-validatebox" required="true">
-            </div>
-            <div class="fitem">
-                <label>Branch:</label>
-                <input name="Branch" class="easyui-validatebox" required="true">
+                <label>回复:</label>
+                <input name="Reply">
             </div>
             <div class="fitem">
                 <input type=submit>
             </div>
             <div id="dlg-buttons">
-                <a href="#" class="easyui-linkbutton" iconCls="icon-cancel" onclick="javascript:$('#dlg3').dialog('close')">Cancel</a>
+                <a href="#" class="easyui-linkbutton" iconCls="icon-cancel" onclick="javascript:$('#dlg3').dialog('close')">取消</a>
             </div>
         </form>
     </div>
 
-    <div id="dlg4" class="easyui-dialog" style="width:400px;height:260px;padding:10px 20px"
+    <div id="dlg4" class="easyui-dialog" style="width:400px;height:210px;padding:10px 20px"
             closed="true" buttons="#dlg-buttons">
         <div class="ftitle">Entry Information</div>
         <form id="fm"  action='http://127.0.0.1:5000/show_order/searchEntry' method="post">
             <div class="fitem">
-                <label>ID:</label>
-                <input name="ID" class="easyui-validatebox" required="true">
-            </div>
-            <div class="fitem">
-                <label>ISBN:</label>
-                <input name="ISBN" class="easyui-validatebox" required="true">
-            </div>
-            <div class="fitem">
-                <label>Branch:</label>
-                <input name="Branch" class="easyui-validatebox" required="true">
+                <label>编号:</label>
+                <input name="OrderID" class="easyui-validatebox" required="true">
             </div>
             <div class="fitem">
                 <input type=submit>
             </div>
             <div id="dlg-buttons">
-                <a href="#" class="easyui-linkbutton" iconCls="icon-cancel" onclick="javascript:$('#dlg4').dialog('close')">Cancel</a>
+                <a href="#" class="easyui-linkbutton" iconCls="icon-cancel" onclick="javascript:$('#dlg4').dialog('close')">取消</a>
             </div>
         </form>
     </div>
@@ -229,7 +194,7 @@
                 <input type=submit>
             </div>
                 <div id="dlg-buttons">
-                    <a href="#" class="easyui-linkbutton" iconCls="icon-cancel" onclick="javascript:$('#dlg5').dialog('close')">Cancel</a>
+                    <a href="#" class="easyui-linkbutton" iconCls="icon-cancel" onclick="javascript:$('#dlg5').dialog('close')">取消</a>
                 </div>
         </form>
     </div>

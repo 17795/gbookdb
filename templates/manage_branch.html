@@ -4,7 +4,7 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <meta name="keywords" content="jquery,ui,easy,easyui,web">
     <meta name="description" content="easyui help you build your web page easily!">
-    <title>Bookstore管理-库存信息</title>
+    <title>Bookstore管理-分店信息</title>
     <link rel="stylesheet" type="text/css" href="http://www.w3cschool.cc/try/jeasyui/themes/default/easyui.css">
     <link rel="stylesheet" type="text/css" href="http://www.w3cschool.cc/try/jeasyui/themes/icon.css">
     <link rel="stylesheet" type="text/css" href="http://www.w3cschool.cc/try/jeasyui/demo/demo.css">
@@ -36,27 +36,27 @@
         function newEntry(){
             $('#dlg1').dialog('open').dialog('setTitle','New Entry');
             $('#fm').form('clear');
-            url = 'http://127.0.0.1:5000/show_stock/newEntry';
+            url = 'http://127.0.0.1:5000/show_branch/newEntry';
         }
         function editEntry() {
             $('#dlg2').dialog('open').dialog('setTitle','Edit Entry');
             $('#fm').form('clear');
-            url = 'http://127.0.0.1:5000/show_stock/editEntry';
+            url = 'http://127.0.0.1:5000/show_branch/editEntry';
         }
         function removeEntry(){
             $('#dlg3').dialog('open').dialog('setTitle','Remove Entry');
             $('#fm').form('clear');
-            url = 'http://127.0.0.1:5000/show_stock/removeEntry';
+            url = 'http://127.0.0.1:5000/show_branch/removeEntry';
         }
         function searchEntry(){
             $('#dlg4').dialog('open').dialog('setTitle','Search Entry');
             $('#fm').form('clear');
-            url = 'http://127.0.0.1:5000/show_stock/searchEntry';
+            url = 'http://127.0.0.1:5000/show_branch/searchEntry';
         }
         function searchSQL(){
             $('#dlg5').dialog('open').dialog('setTitle','Search by SQL');
             $('#fm').form('clear');
-            url = 'http://127.0.0.1:5000/show_stock/searchSQL';
+            url = 'http://127.0.0.1:5000/show_branch/searchSQL';
         }
     </script>
 </head>
@@ -79,42 +79,47 @@
 
     <div data-options="region:'center',title:'具体信息'" style="padding:5px;background:#eee;">
     <table id="dg" title="库存情况" class="easyui-datagrid" style="width:100;height:100"
-            url="http://127.0.0.1:5000/show_stock/{{var}}"
+            url="http://127.0.0.1:5000/show_branch/{{var}}"
             toolbar="#toolbar" pagination="false"
             rownumbers="true" fitColumns="true" singleSelect="true">
         <thead>
             <tr>
-                <th field="ISBN" width="100">ISBN</th>
-                <th field="Branch" width="50">分店编号</th>
-                <th field="Stock" width="50">库存</th>
+                <th field="BranchID" width="50">编号</th>
+                <th field="Address" width="50">地址</th>
+                <th field="Tel" width="50">电话</th>
+                <th field="Email" width="50">邮箱</th>
             </tr>
         </thead>
     </table>
     <div id="toolbar">
-        <a href="#" class="easyui-linkbutton" iconCls="icon-add" plain="true" onclick="window.location.href = 'http://127.0.0.1:5000/show_stock/begin'">全部库存</a>
-        <a href="#" class="easyui-linkbutton" iconCls="icon-add" plain="true" onclick="newEntry()">添加库存</a>
-        <a href="#" class="easyui-linkbutton" iconCls="icon-edit" plain="true" onclick="editEntry()">修改库存</a>
-        <a href="#" class="easyui-linkbutton" iconCls="icon-remove" plain="true" onclick="removeEntry()">删除库存</a>
-        <a href="#" class="easyui-linkbutton" iconCls="icon-remove" plain="true" onclick="searchEntry()">查询库存</a>
+        <a href="#" class="easyui-linkbutton" iconCls="icon-add" plain="true" onclick="window.location.href = 'http://127.0.0.1:5000/show_branch/begin'">全部库存</a>
+        <a href="#" class="easyui-linkbutton" iconCls="icon-add" plain="true" onclick="newEntry()">添加分店</a>
+        <a href="#" class="easyui-linkbutton" iconCls="icon-edit" plain="true" onclick="editEntry()">修改分店</a>
+        <a href="#" class="easyui-linkbutton" iconCls="icon-remove" plain="true" onclick="removeEntry()">删除分店</a>
+        <a href="#" class="easyui-linkbutton" iconCls="icon-remove" plain="true" onclick="searchEntry()">查询分店</a>
         <a href="#" class="easyui-linkbutton" iconCls="icon-remove" plain="true" onclick="searchSQL()">SQL查询</a>
     </div>
     </div>
 
-    <div id="dlg1" class="easyui-dialog" style="width:400px;height:260px;padding:10px 20px"
+    <div id="dlg1" class="easyui-dialog" style="width:400px;height:280px;padding:10px 20px"
             closed="true" buttons="#dlg-buttons">
         <div class="ftitle">Entry Information</div>
-        <form id="fm"  action='http://127.0.0.1:5000/show_stock/newEntry' method="post">
+        <form id="fm"  action='http://127.0.0.1:5000/show_branch/newEntry' method="post">
             <div class="fitem">
-                <label>ISBN:</label>
-                <input name="ISBN" class="easyui-validatebox" required="true">
+                <label>编号:</label>
+                <input name="BranchID" class="easyui-validatebox" required="true">
             </div>
             <div class="fitem">
-                <label>分店编号:</label>
-                <input name="Branch" class="easyui-validatebox" required="true">
+                <label>地址:</label>
+                <input name="Address" class="easyui-validatebox" required="true">
             </div>
             <div class="fitem">
-                <label>库存:</label>
-                <input name="Stock">
+                <label>电话:</label>
+                <input name="Tel">
+            </div>
+            <div class="fitem">
+                <label>邮箱:</label>
+                <input name="Email">
             </div>
             <div class="fitem">
                 <input type=submit>
@@ -125,21 +130,25 @@
         </form>
     </div>
 
-    <div id="dlg2" class="easyui-dialog" style="width:400px;height:260px;padding:10px 20px"
+    <div id="dlg2" class="easyui-dialog" style="width:400px;height:280px;padding:10px 20px"
             closed="true" buttons="#dlg-buttons">
         <div class="ftitle">Entry Information</div>
-        <form id="fm"  action='http://127.0.0.1:5000/show_stock/editEntry' method="post">
+        <form id="fm"  action='http://127.0.0.1:5000/show_branch/editEntry' method="post">
             <div class="fitem">
-                <label>ISBN:</label>
-                <input name="ISBN" class="easyui-validatebox" required="true">
+                <label>编号:</label>
+                <input name="BranchID" class="easyui-validatebox" required="true">
             </div>
             <div class="fitem">
-                <label>分店编号:</label>
-                <input name="Branch" class="easyui-validatebox" required="true">
+                <label>地址:</label>
+                <input name="Address">
             </div>
             <div class="fitem">
-                <label>库存:</label>
-                <input name="Stock">
+                <label>电话:</label>
+                <input name="Tel">
+            </div>
+            <div class="fitem">
+                <label>邮箱:</label>
+                <input name="Email">
             </div>
             <div class="fitem">
                 <input type=submit>
@@ -150,17 +159,13 @@
         </form>
     </div>
 
-    <div id="dlg3" class="easyui-dialog" style="width:400px;height:230px;padding:10px 20px"
+    <div id="dlg3" class="easyui-dialog" style="width:400px;height:210px;padding:10px 20px"
             closed="true" buttons="#dlg-buttons">
         <div class="ftitle">Entry Information</div>
-        <form id="fm"  action='http://127.0.0.1:5000/show_stock/removeEntry' method="post">
+        <form id="fm"  action='http://127.0.0.1:5000/show_branch/removeEntry' method="post">
             <div class="fitem">
-                <label>ISBN:</label>
-                <input name="ISBN" class="easyui-validatebox" required="true">
-            </div>
-            <div class="fitem">
-                <label>分店编号:</label>
-                <input name="Branch" class="easyui-validatebox" required="true">
+                <label>编号:</label>
+                <input name="BranchID" class="easyui-validatebox" required="true">
             </div>
             <div class="fitem">
                 <input type=submit>
@@ -171,17 +176,13 @@
         </form>
     </div>
 
-    <div id="dlg4" class="easyui-dialog" style="width:400px;height:230px;padding:10px 20px"
+    <div id="dlg4" class="easyui-dialog" style="width:400px;height:210px;padding:10px 20px"
             closed="true" buttons="#dlg-buttons">
         <div class="ftitle">Entry Information</div>
-        <form id="fm"  action='http://127.0.0.1:5000/show_stock/searchEntry' method="post">
+        <form id="fm"  action='http://127.0.0.1:5000/show_branch/searchEntry' method="post">
             <div class="fitem">
-                <label>ISBN:</label>
-                <input name="ISBN" class="easyui-validatebox" required="true">
-            </div>
-            <div class="fitem">
-                <label>分店编号:</label>
-                <input name="Branch" class="easyui-validatebox" required="true">
+                <label>编号:</label>
+                <input name="BranchID" class="easyui-validatebox" required="true">
             </div>
             <div class="fitem">
                 <input type=submit>
@@ -195,7 +196,7 @@
     <div id="dlg5" class="easyui-dialog" style="width:400px;height:210px;padding:10px 20px"
             closed="true" buttons="#dlg-buttons">
         <div class="ftitle">SQL</div>
-        <form id="fm"  action='http://127.0.0.1:5000/show_stock/searchSQL' method="post">
+        <form id="fm"  action='http://127.0.0.1:5000/show_branch/searchSQL' method="post">
             <div class="fitem">
                 <label>SQL:</label>
                 <input name="SQL" class="easyui-validatebox" required="true">
