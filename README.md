@@ -14,13 +14,27 @@
  - 管理部分的后端代码基本完成，经初步测试没有明显bug。
  - 数据库结构方面，修改```customer.RedemptionPoints```字段的默认初始值为0，修改```order.Status```字段的默认初始值为```not done```。
 
+2019-12-7 李南鸽
 
+* 命名为order的表格在`select * from order`时会报错：
+
+> ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'order' at line 1
+
+解决方案：因为’order’是保留字，查询SQL语句改为`select * from 'order'(反点)`即可。建议修改表格名。
 
 ### 已完成的功能
 面向客户的部分：
 
  - ~~图书信息的相关查询实现~~
+
  - 用户注册的函数
+
+    **更新**
+
+    注册函数已经可以从web提交的信息生成sql语句
+
+    尚未实现：mysql中的insert数据
+
  - 登录、查询、书店主页的页面设计完成
 
 面向管理人员的部分：
