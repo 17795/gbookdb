@@ -91,8 +91,11 @@ def search_book():
 
 def insert(usr_name,pw):
     cur = con.cursor()
-    cur.execute("INSERT INTO customer(CustomerName, Password, RedemptionPoints) VALUES(%s, %s, 0)", (usr_name,pw))
-
+    cur.execute("INSERT INTO customer(CustomerName, Password, RedemptionPoints) VALUES(\"%s\", \"%s\", 0)", (usr_name,pw))
+    con.commit()
+    cur.execute("select * from customer")
+    print(cur.fetchall())
+    
 
 # 注册功能
 @app.route('/regist', methods=['POST'])
@@ -103,9 +106,28 @@ def register():
     # print(usr_name)
     # print(pw1)
     ch='\"'
-    if pw1==pw2 and len(pw1)<=15:
+    if pw1==pw2 and 6<=len(pw1)<=15:
         insert(usr_name,pw1)
     return render_template('query.html')
+    
+@app.route('/login', methods=['GET','POST'])
+def login():
+    usr_name = request.form['usr-name']
+    pw1 = request.form['pw1'] 
+    sql = 'SELECT Password FROM customer WHERE CustomerName = '+usr_name
+    cur = con.cursor()
+    cur.execute()
+    tmp_pw = cur.fetchall()
+    if tmp_pw and tmp_pw == pw1:
+        print('登录成功')
+        #return render_template('index.html')
+    elif tmp_ow:
+        print('密码错误')
+        # 刷新页面
+    else:
+        print('用户未注册')
+        # 跳转到注册页面
+        # return render_template('register.html')
     
 
 if __name__ == "__main__":
