@@ -31,20 +31,14 @@
     <div class="content">
         <h1 class="title">Bookstore登录</h1>
         <div class="login">
-            <form class="usr-info" action="/???" method="POST">
-                <input class="input-txt" id="name-txt" type="text" placeholder="账&nbsp;号">
-                <!-- -------隐藏密码------- -->
-                <input class="input-txt" type="password" placeholder="密&nbsp;码"/>
+            <form class="usr-info" action="/login" method="POST">
+                <input class="input-txt" id="name-txt" name="usr-name" type="text" placeholder="账&nbsp;号">
+                <input class="input-txt" name="pw1" type="password" placeholder="密&nbsp;码"/>  
+            <div class="btn">
+                <input class="input-submit" type="submit" value="登录">
+                <input class="href" type="button" value="忘记密码">
+            </div>
             </form>
-            <!-- -------更新 登录按钮------- -->
-            <div class="login-setting">
-                <a href="signup.html">登&nbsp;录</a>
-                <a href="forget.html">忘记密码</a>
-            </div>
-            <!--其他方式登录未实现-->
-            <div class="alter-login" style="display: none;">
-                <h3>其他方式登录</h3>
-            </div>
         </div>
     </div>
 
