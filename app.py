@@ -91,7 +91,7 @@ def search_book():
 
 def insert(usr_name,pw):
     cur = con.cursor()
-    cur.execute("INSERT INTO customer(CustomerName, Password, RedemptionPoints) VALUES(\"%s\", \"%s\", 0)", (usr_name,pw))
+    cur.execute("INSERT INTO customer(CustomerName, Password, RedemptionPoints) VALUES(%s, %s, 0)", (usr_name,pw))
     con.commit()
     cur.execute("select * from customer")
     print(cur.fetchall())
@@ -114,20 +114,19 @@ def register():
 def login():
     usr_name = request.form['usr-name']
     pw1 = request.form['pw1'] 
-    sql = 'SELECT Password FROM customer WHERE CustomerName = '+usr_name
+    sql = 'SELECT Password FROM customer WHERE CustomerName = \"'+usr_name+'\"'   
     cur = con.cursor()
-    cur.execute()
-    tmp_pw = cur.fetchall()
+    cur.execute(sql)
+    tmp_pw = cur.fetchall()[0][0]
     if tmp_pw and tmp_pw == pw1:
         print('登录成功')
-        #return render_template('index.html')
-    elif tmp_ow:
+        return render_template('../static/index.html')
+    elif tmp_pw:
         print('密码错误')
-        # 刷新页面
+        return render_template('../static/page/login.html')
     else:
         print('用户未注册')
-        # 跳转到注册页面
-        # return render_template('register.html')
+        return render_template('../static/page/register.html')
     
 
 if __name__ == "__main__":
