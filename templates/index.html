@@ -4,14 +4,14 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge, Chrome=1">
-    <link rel="icon" href="icon.ico" type="image/x-icon">
+    <link rel="icon" href="{{ url_for('static', filename='icon.ico') }}" type="image/x-icon">
     <title>Bookstore</title>
     <meta name="description" content="Bookstore-index">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- base 指示默认跳转链接，该链接暂时无效-->
-    <base href="index.html" target="_blank">
-    <link rel="stylesheet" type="text/css" href="css/default.css">
-    <link rel="stylesheet" type="text/css" href="css/index.css">
+    <base href="index" target="_blank">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/default.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/index.css') }}">
 </head>
 
 <body>
@@ -20,11 +20,9 @@
             <div class="logo"></div>
             <h1>Bookstore</h1>
             <nav>
-                <a href="index.html">首页</a>
-                <a href="page/LogIn.html">登录/注册</a>
-                <a href="index.html#news">新书推荐</a>
-                <a href="index.html#help">帮助中心</a>
-                <a href="index.html#about">联系我们</a>
+                <a href="login">欢迎：{{customer}}</a>
+                <a href="recommend">新书推荐</a>
+                <a href="logout">登出</a>
             </nav>
         </div>
     </header>
@@ -40,12 +38,8 @@
                     <label for="author">作者</label>
                     <input type="radio" name="search_case" id="stock" value="stock">
                     <label for="stock">库存</label>
-                    <input type="radio" name="search_case" id="user" value="user">
-                    <label for="order">订单</label>
                     <input type="radio" name="search_case" id="ch_book_info" value="ch_book_info">
                     <label for="ch_book_info">中文关键字</label>
-                    <input type="radio" name="search_case" id="en_book_info" value="en_book_info">
-                    <label for="en_book_info">英文关键字</label>
                 </div>
                 <div class="search-box">
                     <input class="input-btn" id="search-btn" name="search_btn" type="submit" value="">
@@ -54,23 +48,13 @@
                 </div>
             </form>
         </div>
-
-        <div class="news" tabindex="2">
-            <a id="news"></a>
-        </div>
-        <div class="help" tabindex="3">
-            <a id="help"></a>
-        </div>
-        <div class="about" tabindex="4">
-            <a id="about"></a>
-        </div>
     </div>
     <footer>
         <div class="ft-main">
             <div class="info">
                 <!-- 电话、邮箱暂时无效 -->
                 <p>服务热线：010-12345678 | Email：<a href="mailto:bookstore@126.com">bookstore@126.com</a></p>
-                <p>© <a href="index.html">Bookstore</a>&nbsp;版权所有，侵权必究</p>
+                <p>© <a href="index">Bookstore</a>&nbsp;版权所有，侵权必究</p>
             </div>
         </div>
     </footer>
