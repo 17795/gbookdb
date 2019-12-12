@@ -89,7 +89,7 @@
 }
 
 .content .leftcolumn {
-    width: 80%;
+    width: 100%;
     color: white;
 }
 
@@ -109,31 +109,53 @@
     text-overflow: ellipsis;
 }
 
-table {
-    /* Border styles */
-    border-top-width: 1px;
-    border-top-style: solid;
-    border-top-color: rgb(230, 189, 189);
-}
-
-table .mytable {
-    border-top-width: 1px;
-    border-top-style: solid;
-    border-top-color: rgb(230, 189, 189);
-}
-
-table .mytable td,
+table,
+td,
 th {
-    padding: 5px 10px;
-    font-size: 12px;
-    font-family: Verdana;
-    color: rgb(177, 106, 104);
+    color: black;
+    border: 1px solid black;
+    font-size: 14px;
+    -webkit-user-select: text;
+    -user-select: text;
 }
 
-table .mytable tr:nth-child(even) {
-    background: rgb(238, 211, 210)
+table {
+    width: 100%;
 }
 
-table .mytable tr:nth-child(odd) {
-    background: #FFF
+th {
+    width: 20%;
+    padding: 15px;
+    border: 2px solid black;
+    background-color: rgb(200, 200, 200, 0.9);
+}
+
+td {
+    padding: 15px;
+}
+
+tr {
+    background: rgb(255, 255, 255, 0.9);
+}
+
+tr:hover {
+    background: linear-gradient(#B7D3F8, rgb(255, 255, 255, 0.9));
+}
+
+input[name="quantity" i] {
+    outline-style: none;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+    padding: 10px 14px;
+    width: 620px;
+    font-size: 15px;
+}
+
+input[name="branch" i] {
+    outline-style: none;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+    padding: 10px 14px;
+    width: 620px;
+    font-size: 15px;
 }

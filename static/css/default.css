@@ -12,10 +12,12 @@ a {
     text-decoration: none;
     outline: none;
     color: white;
+    padding-right: 5px;
+    padding-left: 5px;
 }
 
 a:hover {
-    background-color: white;
+    background: white;
     color: black;
 }
 
@@ -127,4 +129,19 @@ footer .ft-main {
 footer .info {
     text-align: center;
     margin: 10px;
+}
+
+input[type="submit" i] {
+    outline-style: none;
+    border: none;
+    border-radius: 5px;
+    padding: 10px 14px;
+    font-size: 15px;
+    background: linear-gradient(#B7D3F8, rgb(255, 255, 255, 0.9));
+    color: black;
+}
+
+input[type="submit" i]:hover {
+    background: #599BF1;
+    color: rgb(255, 255, 255, 0.9);
 }
