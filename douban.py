@@ -32,8 +32,6 @@ class myRequests:
     def __init__(self):
         with self.conn.cursor() as cursor:
             cursor.execute("USE "+ self.mydb +";")
-            cursor.execute("DELETE FROM author;")
-            cursor.execute("DELETE FROM book_info;")
         self.conn.commit()
 
     # use fake useragent to get pages. avoid anti-crawler

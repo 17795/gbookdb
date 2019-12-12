@@ -4,7 +4,7 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <meta name="keywords" content="jquery,ui,easy,easyui,web">
     <meta name="description" content="easyui help you build your web page easily!">
-    <title>Bookstore管理-customer</title>
+    <title>Bookstore管理-会员信息</title>
     <link rel="stylesheet" type="text/css" href="http://www.w3cschool.cc/try/jeasyui/themes/default/easyui.css">
     <link rel="stylesheet" type="text/css" href="http://www.w3cschool.cc/try/jeasyui/themes/icon.css">
     <link rel="stylesheet" type="text/css" href="http://www.w3cschool.cc/try/jeasyui/demo/demo.css">
@@ -68,11 +68,12 @@
     <div region="west" split="true" title="查询内容" style="width:150px;">
             <p style="padding:5px;margin:0;">选择:</p>
             <ul>
-                <li><a href="http://127.0.0.1:5000/show_customer/begin">库存管理</a></li>
-                <li><a href="http://127.0.0.1:5000/show_order/begin">订单管理</a></li>
-                <li><a href="http://127.0.0.1:5000/show_customer/begin">会员管理</a></li>
                 <li><a href="http://127.0.0.1:5000/show_book/begin">图书管理</a></li>
                 <li><a href="http://127.0.0.1:5000/show_author/begin">作者管理</a></li>
+                <li><a href="http://127.0.0.1:5000/show_customer/begin">库存管理</a></li>
+                <li><a href="http://127.0.0.1:5000/show_branch/begin">分店管理</a></li>
+                <li><a href="http://127.0.0.1:5000/show_order/begin">订单管理</a></li>
+                <li><a href="http://127.0.0.1:5000/show_customer/begin">会员管理</a></li>
             </ul>
     </div>
 
@@ -83,73 +84,68 @@
 			rownumbers="true" fitColumns="true" singleSelect="true">
 		<thead>
 			<tr>
-				<th field="CustomerID" width="50">CustomerID</th>
-				<th field="CustomerName" width="50">CustomerName</th>
-				<th field="Discount" width="50">Discount</th>
-                <th field="Password" width="50">Password</th>
+				<th field="CustomerID" width="50">客户编号</th>
+				<th field="CustomerName" width="50">姓名</th>
+                <th field="Password" width="50">密码</th>
 			</tr>
 		</thead>
 	</table>
 	<div id="toolbar">
-        <a href="#" class="easyui-linkbutton" iconCls="icon-add" plain="true" onclick="window.location.href = 'http://127.0.0.1:5000/show_customer/begin'">All Entry</a>
-		<a href="#" class="easyui-linkbutton" iconCls="icon-add" plain="true" onclick="newEntry()">New Entry</a>
-		<a href="#" class="easyui-linkbutton" iconCls="icon-edit" plain="true" onclick="editEntry()">Edit Entry</a>
-		<a href="#" class="easyui-linkbutton" iconCls="icon-remove" plain="true" onclick="removeEntry()">Remove Entry</a>
-        <a href="#" class="easyui-linkbutton" iconCls="icon-remove" plain="true" onclick="searchEntry()">Search Entry</a>
-        <a href="#" class="easyui-linkbutton" iconCls="icon-remove" plain="true" onclick="searchSQL()">Search by SQL</a>
+        <a href="#" class="easyui-linkbutton" iconCls="icon-add" plain="true" onclick="window.location.href = 'http://127.0.0.1:5000/show_customer/begin'">全部会员</a>
+		<a href="#" class="easyui-linkbutton" iconCls="icon-add" plain="true" onclick="newEntry()">添加会员</a>
+		<a href="#" class="easyui-linkbutton" iconCls="icon-edit" plain="true" onclick="editEntry()">修改会员</a>
+		<a href="#" class="easyui-linkbutton" iconCls="icon-remove" plain="true" onclick="removeEntry()">删除会员</a>
+        <a href="#" class="easyui-linkbutton" iconCls="icon-remove" plain="true" onclick="searchEntry()">查询会员</a>
+        <a href="#" class="easyui-linkbutton" iconCls="icon-remove" plain="true" onclick="searchSQL()">SQL查询</a>
 	</div>
     </div>
 
-    <div id="dlg1" class="easyui-dialog" style="width:400px;height:260px;padding:10px 20px"
+    <div id="dlg1" class="easyui-dialog" style="width:400px;height:230px;padding:10px 20px"
             closed="true" buttons="#dlg-buttons">
         <div class="ftitle">Entry Information</div>
         <form id="fm"  action='http://127.0.0.1:5000/show_customer/newEntry' method="post">
             <div class="fitem">
-                <label>CustomerName:</label>
+                <label>姓名:</label>
                 <input name="CustomerName" class="easyui-validatebox" required="true">
             </div>
             <div class="fitem">
-                <label>Discount:</label>
-                <input name="Discount" class="easyui-validatebox" required="true">
-            </div>
-            <div class="fitem">
-                <label>Password:</label>
+                <label>密码:</label>
                 <input name="Password" class="easyui-validatebox" required="true">
             </div>
             <div class="fitem">
                 <input type=submit>
             </div>
                 <div id="dlg-buttons">
-                    <a href="#" class="easyui-linkbutton" iconCls="icon-cancel" onclick="javascript:$('#dlg1').dialog('close')">Cancel</a>
+                    <a href="#" class="easyui-linkbutton" iconCls="icon-cancel" onclick="javascript:$('#dlg1').dialog('close')">取消</a>
                 </div>
         </form>
     </div>
 
-    <div id="dlg2" class="easyui-dialog" style="width:400px;height:330px;padding:10px 20px"
+    <div id="dlg2" class="easyui-dialog" style="width:400px;height:280px;padding:10px 20px"
             closed="true" buttons="#dlg-buttons">
         <div class="ftitle">Entry Information</div>
         <form id="fm"  action='http://127.0.0.1:5000/show_customer/editEntry' method="post">
             <div class="fitem">
-                <label>CustomerID:</label>
+                <label>编号:</label>
                 <input name="CustomerID" class="easyui-validatebox" required="true">
             </div>
             <div class="fitem">
-                <label>CustomerName:</label>
+                <label>姓名:</label>
                 <input name="CustomerName">
             </div>
             <div class="fitem">
-                <label>Discount:</label>
-                <input name="Discount">
+                <label>密码:</label>
+                <input name="Password">
             </div>
             <div class="fitem">
-                <label>Password:</label>
-                <input name="Password">
+                <label>积分:</label>
+                <input name="RedemptionPoint">
             </div>
             <div class="fitem">
                 <input type=submit>
             </div>
                 <div id="dlg-buttons">
-                    <a href="#" class="easyui-linkbutton" iconCls="icon-cancel" onclick="javascript:$('#dlg2').dialog('close')">Cancel</a>
+                    <a href="#" class="easyui-linkbutton" iconCls="icon-cancel" onclick="javascript:$('#dlg2').dialog('close')">取消</a>
                 </div>
         </form>
     </div>
@@ -159,14 +155,14 @@
         <div class="ftitle">Entry Information</div>
         <form id="fm"  action='http://127.0.0.1:5000/show_customer/removeEntry' method="post">
             <div class="fitem">
-                <label>CustomerID:</label>
+                <label>编号:</label>
                 <input name="CustomerID" class="easyui-validatebox" required="true">
             </div>
             <div class="fitem">
                 <input type=submit>
             </div>
             <div id="dlg-buttons">
-                <a href="#" class="easyui-linkbutton" iconCls="icon-cancel" onclick="javascript:$('#dlg3').dialog('close')">Cancel</a>
+                <a href="#" class="easyui-linkbutton" iconCls="icon-cancel" onclick="javascript:$('#dlg3').dialog('close')">取消</a>
             </div>
         </form>
     </div>
@@ -176,14 +172,14 @@
         <div class="ftitle">Entry Information</div>
         <form id="fm"  action='http://127.0.0.1:5000/show_customer/searchEntry' method="post">
             <div class="fitem">
-                <label>CustomerID:</label>
+                <label>编号:</label>
                 <input name="CustomerID" class="easyui-validatebox" required="true">
             </div>
             <div class="fitem">
                 <input type=submit>
             </div>
             <div id="dlg-buttons">
-                <a href="#" class="easyui-linkbutton" iconCls="icon-cancel" onclick="javascript:$('#dlg4').dialog('close')">Cancel</a>
+                <a href="#" class="easyui-linkbutton" iconCls="icon-cancel" onclick="javascript:$('#dlg4').dialog('close')">取消</a>
             </div>
         </form>
     </div>
@@ -200,7 +196,7 @@
                 <input type=submit>
             </div>
                 <div id="dlg-buttons">
-                    <a href="#" class="easyui-linkbutton" iconCls="icon-cancel" onclick="javascript:$('#dlg5').dialog('close')">Cancel</a>
+                    <a href="#" class="easyui-linkbutton" iconCls="icon-cancel" onclick="javascript:$('#dlg5').dialog('close')">取消</a>
                 </div>
         </form>
     </div>

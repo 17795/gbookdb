@@ -46,9 +46,29 @@
     align-items: center;
 }
 
-.content .login-setting a {
-    font-size: 15px;
+
+.content .btn{
+    background-color:transparent;  /* 背景色透明 */
+    border:0px;       /* 边框取消 */
+    }
+    
+.content .input-submit{
+    font-size: 13px;
     color: white;
     text-align: center;
+    width: 56px;
+    height: 25px;
     margin: 10px;
+    z-index: 5;
 }
+.content .href{
+    font-size: 13px;
+    color: white;
+    text-align: center;
+    width: 56px;
+    height: 25px;
+    border: 1px rgb(200, 200, 200, 0.9) solid;
+    margin: 10px;
+    z-index: 5;
+}
+    

@@ -4,7 +4,7 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <meta name="keywords" content="jquery,ui,easy,easyui,web">
     <meta name="description" content="easyui help you build your web page easily!">
-    <title>Bookstore管理-author</title>
+    <title>Bookstore管理-作者信息</title>
     <link rel="stylesheet" type="text/css" href="http://www.w3cschool.cc/try/jeasyui/themes/default/easyui.css">
     <link rel="stylesheet" type="text/css" href="http://www.w3cschool.cc/try/jeasyui/themes/icon.css">
     <link rel="stylesheet" type="text/css" href="http://www.w3cschool.cc/try/jeasyui/demo/demo.css">
@@ -38,6 +38,11 @@
             $('#fm').form('clear');
             url = 'http://127.0.0.1:5000/show_author/newEntry';
         }
+        function editEntry() {
+            $('#dlg2').dialog('open').dialog('setTitle','Edit Entry');
+            $('#fm').form('clear');
+            url = 'http://127.0.0.1:5000/show_author/editEntry';
+        }
         function removeEntry(){
             $('#dlg3').dialog('open').dialog('setTitle','Remove Entry');
             $('#fm').form('clear');
@@ -53,6 +58,9 @@
             $('#fm').form('clear');
             url = 'http://127.0.0.1:5000/show_author/searchSQL';
         }
+        function formatLongText(value){
+            return "<span title='" + value + "'>" + value + "</span>";  
+        }
     </script>
 </head>
 <body  class="easyui-layout">
@@ -63,11 +71,12 @@
     <div region="west" split="true" title="查询内容" style="width:150px;">
             <p style="padding:5px;margin:0;">选择:</p>
             <ul>
-                <li><a href="http://127.0.0.1:5000/show_stock/begin">库存管理</a></li>
-                <li><a href="http://127.0.0.1:5000/show_order/begin">订单管理</a></li>
-                <li><a href="http://127.0.0.1:5000/show_customer/begin">会员管理</a></li>
                 <li><a href="http://127.0.0.1:5000/show_book/begin">图书管理</a></li>
                 <li><a href="http://127.0.0.1:5000/show_author/begin">作者管理</a></li>
+                <li><a href="http://127.0.0.1:5000/show_stock/begin">库存管理</a></li>
+                <li><a href="http://127.0.0.1:5000/show_branch/begin">分店管理</a></li>
+                <li><a href="http://127.0.0.1:5000/show_order/begin">订单管理</a></li>
+                <li><a href="http://127.0.0.1:5000/show_customer/begin">会员管理</a></li>
             </ul>
     </div>
 
@@ -78,17 +87,18 @@
             rownumbers="true" fitColumns="true" singleSelect="true">
         <thead>
             <tr>
-                <th field="ISBN" width="100">ISBN</th>
-                <th field="Author" width="50">Author</th>
+                <th formatter = "formatLongText" field="AuthorName" width="50">作者</th>
+                <th formatter = "formatLongText" field="AuthorIntro" width="100">作者简介</th>
             </tr>
         </thead>
     </table>
     <div id="toolbar">
-        <a href="#" class="easyui-linkbutton" iconCls="icon-add" plain="true" onclick="window.location.href = 'http://127.0.0.1:5000/show_author/begin'">All Entry</a>
-        <a href="#" class="easyui-linkbutton" iconCls="icon-add" plain="true" onclick="newEntry()">New Entry</a>
-        <a href="#" class="easyui-linkbutton" iconCls="icon-remove" plain="true" onclick="removeEntry()">Remove Entry</a>
-        <a href="#" class="easyui-linkbutton" iconCls="icon-remove" plain="true" onclick="searchEntry()">Search Entry</a>
-        <a href="#" class="easyui-linkbutton" iconCls="icon-remove" plain="true" onclick="searchSQL()">Search by SQL</a>
+        <a href="#" class="easyui-linkbutton" iconCls="icon-add" plain="true" onclick="window.location.href = 'http://127.0.0.1:5000/show_author/begin'">全部作者</a>
+        <a href="#" class="easyui-linkbutton" iconCls="icon-add" plain="true" onclick="newEntry()">添加作者</a>
+        <a href="#" class="easyui-linkbutton" iconCls="icon-edit" plain="true" onclick="editEntry()">修改作者</a>
+        <a href="#" class="easyui-linkbutton" iconCls="icon-remove" plain="true" onclick="removeEntry()">删除作者</a>
+        <a href="#" class="easyui-linkbutton" iconCls="icon-remove" plain="true" onclick="searchEntry()">查询作者</a>
+        <a href="#" class="easyui-linkbutton" iconCls="icon-remove" plain="true" onclick="searchSQL()">SQL查询</a>
     </div>
     </div>
 
@@ -97,60 +107,77 @@
         <div class="ftitle">Entry Information</div>
         <form id="fm"  action='http://127.0.0.1:5000/show_author/newEntry' method="post">
             <div class="fitem">
-                <label>ISBN:</label>
-                <input name="ISBN" class="easyui-validatebox" required="true">
+                <label>作者:</label>
+                <input name="AuthorName" class="easyui-validatebox" required="true">
             </div>
             <div class="fitem">
-                <label>Author:</label>
-                <input name="Author" class="easyui-validatebox" required="true">
+                <label>作者简介:</label>
+                <input name="AuthorIntro" class="easyui-validatebox" required="true">
             </div>
             <div class="fitem">
                 <input type=submit>
             </div>
                 <div id="dlg-buttons">
-                    <a href="#" class="easyui-linkbutton" iconCls="icon-cancel" onclick="javascript:$('#dlg1').dialog('close')">Cancel</a>
+                    <a href="#" class="easyui-linkbutton" iconCls="icon-cancel" onclick="javascript:$('#dlg1').dialog('close')">取消</a>
                 </div>
         </form>
     </div>
 
-    <div id="dlg3" class="easyui-dialog" style="width:400px;height:230px;padding:10px 20px"
+    <div id="dlg2" class="easyui-dialog" style="width:400px;height:260px;padding:10px 20px"
+            closed="true" buttons="#dlg-buttons">
+        <div class="ftitle">Entry Information</div>
+        <form id="fm"  action='http://127.0.0.1:5000/show_author/editEntry' method="post">
+            <div class="fitem">
+                <label>原作者:</label>
+                <input name="OldAuthor" class="easyui-validatebox" required="true">
+            </div>
+            <div class="fitem">
+                <label>新作者:</label>
+                <input name="AuthorName">
+            </div>
+            <div class="fitem">
+                <label>作者简介:</label>
+                <input name="AuthorIntro">
+            </div>
+            <div class="fitem">
+                <input type=submit>
+            </div>
+                <div id="dlg-buttons">
+                    <a href="#" class="easyui-linkbutton" iconCls="icon-cancel" onclick="javascript:$('#dlg2').dialog('close')">取消</a>
+                </div>
+        </form>
+    </div>
+
+    <div id="dlg3" class="easyui-dialog" style="width:400px;height:210px;padding:10px 20px"
             closed="true" buttons="#dlg-buttons">
         <div class="ftitle">Entry Information</div>
         <form id="fm"  action='http://127.0.0.1:5000/show_author/removeEntry' method="post">
             <div class="fitem">
-                <label>ISBN:</label>
-                <input name="ISBN" class="easyui-validatebox" required="true">
-            </div>
-            <div class="fitem">
-                <label>Author:</label>
-                <input name="Author" class="easyui-validatebox" required="true">
+                <label>作者:</label>
+                <input name="AuthorName" class="easyui-validatebox" required="true">
             </div>
             <div class="fitem">
                 <input type=submit>
             </div>
             <div id="dlg-buttons">
-                <a href="#" class="easyui-linkbutton" iconCls="icon-cancel" onclick="javascript:$('#dlg3').dialog('close')">Cancel</a>
+                <a href="#" class="easyui-linkbutton" iconCls="icon-cancel" onclick="javascript:$('#dlg3').dialog('close')">取消</a>
             </div>
         </form>
     </div>
 
-    <div id="dlg4" class="easyui-dialog" style="width:400px;height:230px;padding:10px 20px"
+    <div id="dlg4" class="easyui-dialog" style="width:400px;height:210px;padding:10px 20px"
             closed="true" buttons="#dlg-buttons">
         <div class="ftitle">Entry Information</div>
         <form id="fm"  action='http://127.0.0.1:5000/show_author/searchEntry' method="post">
             <div class="fitem">
-                <label>ISBN:</label>
-                <input name="ISBN" class="easyui-validatebox" required="true">
-            </div>
-            <div class="fitem">
-                <label>Author:</label>
-                <input name="Author" class="easyui-validatebox" required="true">
+                <label>作者:</label>
+                <input name="作者" class="easyui-validatebox" required="true">
             </div>
             <div class="fitem">
                 <input type=submit>
             </div>
             <div id="dlg-buttons">
-                <a href="#" class="easyui-linkbutton" iconCls="icon-cancel" onclick="javascript:$('#dlg4').dialog('close')">Cancel</a>
+                <a href="#" class="easyui-linkbutton" iconCls="icon-cancel" onclick="javascript:$('#dlg4').dialog('close')">取消</a>
             </div>
         </form>
     </div>
@@ -167,7 +194,7 @@
                 <input type=submit>
             </div>
                 <div id="dlg-buttons">
-                    <a href="#" class="easyui-linkbutton" iconCls="icon-cancel" onclick="javascript:$('#dlg5').dialog('close')">Cancel</a>
+                    <a href="#" class="easyui-linkbutton" iconCls="icon-cancel" onclick="javascript:$('#dlg5').dialog('close')">取消</a>
                 </div>
         </form>
     </div>
