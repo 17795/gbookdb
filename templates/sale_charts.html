@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>销售信息图表</title>
+    <script src="echarts.min.js"></script>
+    <script src="jquery-3.3.1.min.js"></script>
+</head>
+<body>
+<div class="text" style=" text-align:center;font-size:23px"><br>销售信息报表<br><br></div>
+<table border='0' cellspacing='0'>
+    <tr>
+        <td>
+        <div id="main" style="width:700px;height:450px;"></div>
+        <script type="text/javascript">
+            var dom = document.getElementById("main");
+            var myChart = echarts.init(dom);
+            var app = {};
+            option = null;
+            app.title = '资深用户排行榜';
+            option = {
+                title: {
+                    text: '资深用户排行榜',
+                    subtext: '根据用户积分排名',
+            },
+            tooltip: {
+                trigger: 'axis',
+                axisPointer: {
+                type: 'shadow'
+                }
+            },
+            legend: {
+                data: ['用户积分']
+            },
+            grid: {
+                left: '3%',
+                right: '4%',
+                bottom: '3%',
+                containLabel: true
+            },
+            xAxis: {
+            type: 'value',
+            boundaryGap: [0, 0.01]
+            },
+            yAxis: {
+            type: 'category',
+            data: ['柴静','王思聪','马云','马化腾','王石','白岩松','李南鸽','柯岩','王心怡','许瑞晗']
+            },
+            series: [
+            {
+            name: '用户积分',
+            type: 'bar',
+            data: [0,20,30,40,50,60,85,105,128,234]
+            },
+            ]
+};
+;
+if (option && typeof option === "object") {
+    myChart.setOption(option, true);
+}
+       </script>
+        </td>
+        <td>
+        <div id="main2" style="width:700px;height:450px;"></div>
+        <script type="text/javascript">
+            var dom = document.getElementById("main2");
+            var myChart = echarts.init(dom);
+            var app = {};
+            option = null;
+            app.title = '近期活跃用户排行榜';
+            option = {
+                title: {
+                    text: '近期活跃用户排行榜',
+                    subtext: '根据最近用户订单数排名',
+            },
+            tooltip: {
+                trigger: 'axis',
+                axisPointer: {
+                type: 'shadow'
+                }
+            },
+            legend: {
+                data: ['最近订单数']
+            },
+            grid: {
+                left: '3%',
+                right: '4%',
+                bottom: '3%',
+                containLabel: true
+            },
+            xAxis: {
+            type: 'value',
+            boundaryGap: [0, 0.01]
+            },
+            yAxis: {
+            type: 'category',
+            data: ['王心怡','李南鸽','柯岩','柴静','王思聪','马云','马化腾','王石','白岩松','许瑞晗']
+            },
+            series: [
+            {
+            name: '最近订单数',
+            type: 'bar',
+            data: [1,2,3,4,5,6,7,8,9,10]
+            },
+            ]
+};
+;
+if (option && typeof option === "object") {
+    myChart.setOption(option, true);
+}
+       </script>
+        </td>
+    </tr>
+</table>
+<table border='0' cellspacing='0'>
+    <tr>
+        <td>
+        <div id="main3" style="width:1400px;height:500px;"></div>
+            <script type="text/javascript">
+var dom = document.getElementById("main3");
+var myChart = echarts.init(dom);
+var app = {};
+option = null;
+option = {
+    title: {
+        text: '各门店月销量折线图'
+    },
+    tooltip: {
+        trigger: 'axis'
+    },
+    legend: {
+        data:['北京','上海','深圳']
+    },
+    grid: {
+        left: '3%',
+        right: '4%',
+        bottom: '3%',
+        containLabel: true
+    },
+    toolbox: {
+        feature: {
+            saveAsImage: {}
+        }
+    },
+    xAxis: {
+        type: 'category',
+        boundaryGap: false,
+        data: ['7月','8月','9月','10月','11月','12月']
+    },
+    yAxis: {
+        type: 'value'
+    },
+    series: [
+        {
+            name:'北京',
+            type:'line',
+            stack: '订单数',
+            data:[120, 132, 101, 134, 90, 230]
+        },
+        {
+            name:'上海',
+            type:'line',
+            stack: '订单数',
+            data:[220, 182, 191, 234, 290, 330]
+        },
+        {
+            name:'深圳',
+            type:'line',
+            stack: '订单数',
+            data:[150, 232, 201, 154, 190, 330]
+        }
+    ]
+};
+;
+if (option && typeof option === "object") {
+    myChart.setOption(option, true);
+}
+       </script>
+        </td>
+    </tr>
+</table>
+<table border='0' cellspacing='0'>
+    <tr>
+        <td>
+        <div id="main4" style="width:1400px;height:500px;"></div>
+        <script type="text/javascript">
+			var myChart = echarts.init($("#main4")[0]);
+            var my_option = {
+                title : {
+                    text: '销售图书类型饼图',
+                    x:'center'
+                },
+                tooltip : {
+                    trigger: 'item',
+                    formatter: "{a} <br/>{b} : {c} ({d}%)"
+                },
+                legend: {
+                    orient: 'vertical',
+                    left: 'left',
+                    data: ['犯罪','剧情','爱情','同性','动作','喜剧','战争','灾难','动画','奇幻','历史','科幻','悬疑','冒险','歌舞','音乐','古装','传记','家庭','惊悚','运动','纪录片','情色','儿童','西部','武侠','恐怖']
+                },
+                series : [
+                    {
+                    name: '类型',
+                    type: 'pie',
+                    radius : '55%',
+                    center: ['50%', '60%'],
+                    data:[
+                {value:45, name:'犯罪'},
+{value:188, name:'剧情'},
+{value:58, name:'爱情'},
+{value:7, name:'同性'},
+{value:32, name:'动作'},
+{value:48, name:'喜剧'},
+{value:19, name:'战争'},
+{value:2, name:'灾难'},
+{value:35, name:'动画'},
+{value:37, name:'奇幻'},
+{value:12, name:'历史'},
+{value:25, name:'科幻'},
+{value:31, name:'悬疑'},
+{value:44, name:'冒险'},
+{value:5, name:'歌舞'},
+{value:6, name:'音乐'},
+{value:8, name:'古装'},
+{value:13, name:'传记'},
+{value:24, name:'家庭'},
+{value:36, name:'惊悚'},
+{value:1, name:'运动'},
+{value:4, name:'纪录片'},
+{value:1, name:'情色'},
+{value:5, name:'儿童'},
+{value:4, name:'西部'},
+{value:4, name:'武侠'},
+{value:2, name:'恐怖'}
+            ],
+                    itemStyle: {
+                        emphasis: {
+                            shadowBlur: 10,
+                            shadowOffsetX: 0,
+                            shadowColor: 'rgba(0, 0, 0, 0.5)'
+                        }
+                    }
+                }
+            ]
+            };
+			myChart.setOption(my_option);
+        </script>
+        </td>
+    </tr>
+</table>
+</body>
+</html>

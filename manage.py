@@ -519,5 +519,115 @@ def show_branch(argv):
         return render_template('manage_branch.html', var = 'query+:'+SQL)
 
 
+@app.route('/show_book_charts', methods=['GET', 'POST'])
+def show_book_charts():
+    sql_query = 'select * from book order by Score desc'
+    detail = select(sql_query)
+    # 评分top20榜单
+    detail_top = detail[:20]
+    book_name = ''
+    book_score = ''
+    for record in detail_top:
+        print(record)
+        if book_name == '':
+            book_name = "'" + record[1]+' ' + record[2]+"'"
+            book_score = str(record[8])
+        else:
+            book_name = ',' + book_name
+            book_name = "'" + record[1]+' ' + record[2]+"'"+book_name
+            book_score = ',' + book_score
+            book_score = str(record[8]) + book_score
+    print(book_score)
+    print(book_name)
+    # 各类型平均得分柱状图
+    gnere_count = {}
+    gnere_sum = {}
+    for record in detail:
+        if record[7] in gnere_count:
+            gnere_count[record[7]] += 1
+            gnere_sum[record[7]] += record[8]
+        else:
+            gnere_count[record[7]] = 1
+            gnere_sum[record[7]] = record[8]
+    for i in gnere_sum.items():
+        gnere_sum[i[0]] = round(float(i[1])/float(gnere_count[i[0]]), 2)
+    gnere_str = ''
+    gnere_score = ''
+    print(gnere_sum)
+    for i in gnere_sum.items():
+        gnere_str = ",'"+i[0]+"'"+gnere_str
+        gnere_score = ",'"+str(i[1])+"'"+gnere_score
+    print(gnere_str)
+    print(gnere_score)
+    return render_template('book_charts.html')
+    # return render_template('book_charts.html', book_name=book_name, book_score=book_score)
+
+
+@app.route('/show_sale_charts', methods=['GET', 'POST'])
+def show_sale_charts():
+    # 用户积分排行榜
+    sql_query = "SELECT `CustomerName`, RedemptionPoints FROM customer order by RedemptionPoints desc"
+    detail = select(sql_query)
+    # 积分top10
+    detail_top = detail[:10]
+    customer_name = ''
+    customer_point = ''
+    for record in detail_top:
+        print(record)
+        if customer_name == '':
+            customer_name = "'" + record[0] + "'"
+            customer_point = str(record[1])
+        else:
+            customer_name = ',' + customer_name
+            customer_name = "'" + record[0] + "'" + customer_name
+            customer_point = ',' + customer_point
+            customer_point = str(record[1]) + customer_point
+    print(customer_name)
+    print(customer_point)
+    # 用户订单数排行榜
+    sql_query = "SELECT CustomerName,COUNT(*) FROM `customer` INNER JOIN `order` ON (`order`.CustomerID=customer.CustomerID) GROUP BY `customer`.`CustomerID` ORDER BY COUNT(*) desc"
+    detail = select(sql_query)
+    # 订单top10
+    detail_top = detail[:10]
+    active_name = ''
+    active_point = ''
+    for record in detail_top:
+        print(record)
+        if active_name == '':
+            active_name = "'" + record[0] + "'"
+            active_point = str(record[1])
+        else:
+            active_name = ',' + active_name
+            active_name = "'" + record[0] + "'" + active_name
+            active_point = ',' + active_point
+            active_point = str(record[1]) + active_point
+    print(active_name)
+    print(active_point)
+    # 门店销售数
+    # 这个SQL我有点搞不定
+    # 最后获取三个string，分别为北京、上海、深圳6-12月各自的订单数就行了，类似 '120, 132, 101, 134, 90, 230'
+    # sql_query = "CREATE  VIEW `order_by_month` AS (select `branch`.`BranchID` AS `BranchID`,`branch`.`Address` AS `Address`,`order_entry`.`ISBN` AS `ISBN`,`order_entry`.`Quantity` AS `Quantity`,`order`.`Date` AS `Date` from ((`order_entry` join `order` on((`order`.`OrderID` = `order_entry`.`OrderID`))) join `branch` on((`branch`.`BranchID` = `order_entry`.`BranchID`))) group by date_format(`order`.`Date`,'%Y-%m')) ;"+"SELECT `order_by_month`.`Address`, COUNT(`order_by_month`.`Quantity`) FROM `order_by_month` INNER JOIN `book` ON (`book`.`ISBN`=`order_by_month`.`ISBN`) GROUP BY `order_by_month`.`BranchID`"
+    # detail = select(sql_query)
+    # 销售书籍类型占比饼图
+    sql_query = "SELECT book.Tag,SUM(order_entry.Quantity) FROM `book` INNER JOIN `order_entry` ON (`order_entry`.ISBN=book.ISBN) GROUP BY ISBN"
+    detail = select(sql_query)
+    type_count = {}
+    for record in detail:
+        if record in type_count:
+            type_count[record[0]] += int(record[1])
+        else:
+            type_count[record[0]] = int(record[1])
+    type_str = ''
+    type_count_str = ''
+    for i in type_count.items():
+        type_str = type_str + "'" + i[0] + "',"
+        type_count_str = type_count_str + "{value:" + str(i[1]) + ", name:'" + i[0] + "'},\n"
+    type_str = type_str[:-1]
+    type_count_str = type_count_str[:-1]
+    print(type_str)
+    print(type_count_str)
+    return render_template('sale_charts.html')
+
+
 if __name__ == "__main__":
     app.run(debug=True)
