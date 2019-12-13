@@ -5,8 +5,8 @@ import datetime
 
 con = connect("localhost", "root", "", "gbookdb")
 app = Flask(__name__, static_url_path='')
-customer = ""
 app.config['SECRET_KEY'] = 'forsession'
+customer = ""
 
 # 封装 sql 操作
 def select(sql_query):
@@ -77,6 +77,7 @@ def logout():
     return render_template('login.html')
 
 
+# 登录
 @app.route('/login', methods=['GET','POST'])
 def login():
     global customer
@@ -172,25 +173,67 @@ def search_book(argv):
                 html_str += f'<tr><th>总库存:</th><td>{record[1]}</td></tr>'
                 html_str += "</table><br/>"
             return render_template('query.html', stock=checked, query_txt=query_txt, content=html_str, customer = customer)
-        elif search_case == 'order':
-            sql_query = "SELECT order_entry.*,order.Date,order.Message,order.Reply,order.Status FROM order_entry INNER JOIN `order` ON order.OrderID = order_entry.OrderID WHERE order.OrderID = " + query_txt + ";"
-            data = select(sql_query)
-            html_str = ""
-            for record in data:
-                html_str += '<table> <div class="mytable">'
-                html_str += f'<tr><th>订单号:</th><td>{record[0]}</td></tr>'
-                html_str += f'<tr><th>ISBN:</th><td>{record[1]}</td></tr>'
-                html_str += f'<tr><th>门店:</th><td>{record[2]}</td></tr>'
-                html_str += f'<tr><th>数量:</th><td>{record[3]}</td></tr>'
-                html_str += f'<tr><th>折扣:</th><td>{record[4]}</td></tr>'
-                html_str += f'<tr><th>日期:</th><td>{record[5]}</td></tr>'
-                html_str += f'<tr><th>留言:</th><td>{record[6]}</td></tr>'
-                html_str += f'<tr><th>回复:</th><td>{record[7]}</td></tr>'
-                html_str += f'<tr><th>状态:</th><td>{record[8]}</td></tr>'
-                html_str += '</div></table>'
-            return render_template('query.html', order=checked, query_txt=query_txt, content=html_str, customer = customer)
     if 'sql_query' in session:
         return render_template('query.html', data = select(session['sql_query']), customer = customer)
     return render_template('query.html', customer = customer)
+
+
+# 客户信息显示
+@app.route('/customer/<argv>', methods=['GET','POST'])
+def Customer(argv):
+    global customer
+    if argv == "default":
+        return render_template('customer.html', customer = customer)
+    elif argv == "cart":
+        sql_query = "SELECT CustomerID FROM customer WHERE CustomerName='"+customer+"';"
+        CustomerID = select(sql_query)[0][0]
+        sql_query = "SELECT order_entry.*,order.Date,order.Message,order.Reply,order.Status FROM order_entry INNER JOIN `order` ON order.OrderID = order_entry.OrderID WHERE order.Status = 'in cart' AND order.CustomerID = " + str(CustomerID) + ";"
+        data = select(sql_query)
+        html_str = ""
+        for record in data:
+            html_str += '<table> <div class="mytable">'
+            html_str += f'<tr><th>订单号:</th><td>{record[0]}</td></tr>'
+            html_str += f'<tr><th>ISBN:</th><td>{record[1]}</td></tr>'
+            html_str += f'<tr><th>门店:</th><td>{record[2]}</td></tr>'
+            html_str += f'<tr><th>数量:</th><td>{record[3]}</td></tr>'
+            html_str += f'<tr><th>折扣:</th><td>{record[4]}</td></tr>'
+            html_str += f'<tr><th>日期:</th><td>{record[5]}</td></tr>'
+            html_str += f'<tr><th>留言:</th><td>{record[6]}</td></tr>'
+            html_str += f'<tr><th>回复:</th><td>{record[7]}</td></tr>'
+            html_str += f'<tr><th>状态:</th><td>{record[8]}</td></tr>'
+            html_str += '</div></table></br>'
+        return render_template('customer.html', content = html_str, customer = customer)
+    elif argv == "info":
+        sql_query = "SELECT * FROM customer WHERE CustomerName='"+customer+"';"
+        data = select(sql_query)
+        html_str = ""
+        for record in data:
+            html_str += '<table> <div class="mytable">'
+            html_str += f'<tr><th>ID:</th><td>{record[0]}</td></tr>'
+            html_str += f'<tr><th>用户名:</th><td>{record[1]}</td></tr>'
+            html_str += f'<tr><th>积分:</th><td>{record[3]}</td></tr>'
+            html_str += '</div></table></br>'
+        return render_template('customer.html', content = html_str, customer = customer)
+    elif argv == "history":
+        sql_query = "SELECT CustomerID FROM customer WHERE CustomerName='"+customer+"';"
+        CustomerID = select(sql_query)[0][0]
+        sql_query = "SELECT order_entry.*,order.Date,order.Message,order.Reply,order.Status FROM order_entry INNER JOIN `order` ON order.OrderID = order_entry.OrderID WHERE order.Status = 'done' AND order.CustomerID = " + str(CustomerID) + ";"
+        data = select(sql_query)
+        html_str = ""
+        for record in data:
+            html_str += '<table> <div class="mytable">'
+            html_str += f'<tr><th>订单号:</th><td>{record[0]}</td></tr>'
+            html_str += f'<tr><th>ISBN:</th><td>{record[1]}</td></tr>'
+            html_str += f'<tr><th>门店:</th><td>{record[2]}</td></tr>'
+            html_str += f'<tr><th>数量:</th><td>{record[3]}</td></tr>'
+            html_str += f'<tr><th>折扣:</th><td>{record[4]}</td></tr>'
+            html_str += f'<tr><th>日期:</th><td>{record[5]}</td></tr>'
+            html_str += f'<tr><th>留言:</th><td>{record[6]}</td></tr>'
+            html_str += f'<tr><th>回复:</th><td>{record[7]}</td></tr>'
+            html_str += f'<tr><th>状态:</th><td>{record[8]}</td></tr>'
+            html_str += '</div></table></br>'
+        return render_template('customer.html', content = html_str, customer = customer)
+
+
 if __name__ == "__main__":
     app.run(debug=True)
