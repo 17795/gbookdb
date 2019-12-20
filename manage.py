@@ -606,7 +606,6 @@ def show_sale_charts():
     # 门店销售数
     # 这个SQL我有点搞不定
     # 最后获取三个string，分别为北京、上海、深圳6-12月各自的订单数就行了，类似 '120, 132, 101, 134, 90, 230'
-    # sql_query = "CREATE  VIEW `order_by_month` AS (select `branch`.`BranchID` AS `BranchID`,`branch`.`Address` AS `Address`,`order_entry`.`ISBN` AS `ISBN`,`order_entry`.`Quantity` AS `Quantity`,`order`.`Date` AS `Date` from ((`order_entry` join `order` on((`order`.`OrderID` = `order_entry`.`OrderID`))) join `branch` on((`branch`.`BranchID` = `order_entry`.`BranchID`))) group by date_format(`order`.`Date`,'%Y-%m')) ;"+"SELECT `order_by_month`.`Address`, COUNT(`order_by_month`.`Quantity`) FROM `order_by_month` INNER JOIN `book` ON (`book`.`ISBN`=`order_by_month`.`ISBN`) GROUP BY `order_by_month`.`BranchID`"
     # detail = select(sql_query)
     # 销售书籍类型占比饼图
     sql_query = "SELECT book.Tag,SUM(order_entry.Quantity) FROM `book` INNER JOIN `order_entry` ON (`order_entry`.ISBN=book.ISBN) GROUP BY ISBN"

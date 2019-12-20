@@ -56,12 +56,12 @@ class myRequests:
         return self.category_urls
 
     # 处理函数
-    def getChineseIntro(self, line_tags):
-        ChineseIntro = []
+    def getIntro(self, line_tags):
+        Intro = []
         for tag in line_tags:
-            ChineseIntro += tag.contents
-        ChineseIntro = '\n'.join(ChineseIntro)
-        return ChineseIntro
+            Intro += tag.contents
+        Intro = '\n'.join(Intro)
+        return Intro
 
     def getAuthor(self, raw_author):
         parts=raw_author.split('\n')
@@ -73,6 +73,7 @@ class myRequests:
 
         ISBN=""
         Author=""
+        intro=""
         Publisher=""
         PTime=""
         Score=""
@@ -87,6 +88,7 @@ class myRequests:
             detailed=False
         try:
             Author=self.getAuthor(bookSoup.select("#info a")[0].contents[0])
+            intro=self.getIntro(bookSoup.select('.intro')[1].select('p'))
         except:
             print("Fail to get Author of '"+Title+"', miss info in the table 'author'")
             detailed=False
@@ -117,12 +119,12 @@ class myRequests:
             ChineseIntro=bookSoup.select('#link-report .all .intro p')
             if ChineseIntro==[]:
                 ChineseIntro=bookSoup.select('#link-report .intro p')
-            ChineseIntro=self.getChineseIntro(ChineseIntro)
+            ChineseIntro=self.getIntro(ChineseIntro)
         except:
             print("Fail to get the Chinese Intro of '"+Title+"', the content in varible now is "+ChineseIntro)
             detailed=False
 
-        return detailed,[ISBN, Title, Publisher, PTime, Price, Score, ChineseIntro, "No Info"],[ISBN, Author]
+        return detailed,[ISBN, Title, Publisher, PTime, Price, Score, ChineseIntro, "No Info"],[ISBN, Author],[Author, intro]
 
     def getBookInfo(self):
         if os.path.exists(self.category_file):
@@ -133,10 +135,12 @@ class myRequests:
 
         cnt=self.cnt
         for url in self.category_urls:
+            Tag=url.split('tag/')[1].split('/')[0]
             web_data=self.getPage(url=url)
             soup=BeautifulSoup(web_data.text.encode("utf-8"), "lxml")
             books=soup.select("li.subject-item h2 a")
             bookinfo=[] # bookinfo
+            compose=[]
             authorinfo=[] # relationships in author table
             for book in books:
                 book_url=book.attrs['href']
@@ -144,20 +148,27 @@ class myRequests:
                 bookSoup=BeautifulSoup(book_data.text.encode('utf-8'),'lxml')
 
                 bookDetail=self.getDetail(bookSoup)
+                bookDetail[1].append(Tag)
                 if bookDetail[0]==True:
                     bookinfo.append(bookDetail[1])
-                    authorinfo.append(bookDetail[2])
+                    compose.append(bookDetail[2])
+                    authorinfo.append(bookDetail[3])
                     cnt-=1
             bookinsert_sql='''INSERT IGNORE INTO book (
-                ISBN, BookName, Publisher, Ptime, Price, Score, ChineseIntro, EnglishIntro
-            ) VALUES (%s,%s,%s,%s,%s,%s,%s,%s)'''
-            authorinsert_sql='''INSERT IGNORE INTO author (
-                ISBN, Author
+                ISBN, Title, Publisher, Ptime, Price, Score, ChineseIntro, EnglishIntro, Tag
+            ) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s)'''
+            composeinsert_sql='''INSERT IGNORE INTO compose (
+                ISBN, AuthorName
+            ) VALUES (%s,%s)'''
+            authorinsert_sql='''INSERT IGNORE INTO author(
+                AuthorName, AuthorIntro
             ) VALUES (%s,%s)'''
             with self.conn.cursor() as cursor:
                 cursor.executemany(bookinsert_sql, bookinfo)
                 cursor.executemany(authorinsert_sql, authorinfo)
-            self.conn.commit()
+                self.conn.commit()
+                cursor.executemany(composeinsert_sql, compose)
+                self.conn.commit()
             if cnt<0:
                 break
         self.conn.close()

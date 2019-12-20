@@ -1,5 +1,6 @@
-from flask import *
-from pymysql import *
+from flask import Flask, request, render_template
+from flask import flash, redirect, url_for, session
+from pymysql import connect
 import hashlib
 import datetime
 
@@ -7,6 +8,7 @@ con = connect("localhost", "root", "", "gbookdb")
 app = Flask(__name__, static_url_path='')
 app.config['SECRET_KEY'] = 'forsession'
 customer = ""
+
 
 # 封装 sql 操作
 def select(sql_query):
@@ -28,7 +30,8 @@ def startup():
     if len(customer) == 0:
         return render_template('login.html')
     else:
-        return render_template('index.html', customer = customer)
+        return render_template('index.html', customer=customer)
+
 
 # 首页
 @app.route('/index')
@@ -38,18 +41,18 @@ def index():
     if len(customer) == 0:
         return render_template('login.html')
     else:
-        return render_template('index.html', customer = customer)
+        return render_template('index.html', customer=customer)
 
 
 # 注册
-@app.route('/register', methods=['GET','POST'])
+@app.route('/register', methods=['GET', 'POST'])
 def register():
     global customer
     if request.method == 'POST':
         usr_name = request.form['usr-name']
         pw1 = request.form['pw1']
         pw2 = request.form['pw2']
-        sql = "SELECT * FROM customer WHERE CustomerName = '"+usr_name+"';"  
+        sql = "SELECT * FROM customer WHERE CustomerName = '" + usr_name + "';"
         cur = con.cursor()
         cur.execute(sql)
         tmp = cur.fetchall()
@@ -61,30 +64,34 @@ def register():
             flash('密码需由6~15个字符组成，请重新输入')
         elif pw1 == pw2 and 6 <= len(pw1) <= 15:
             cur = con.cursor()
-            cur.execute("INSERT INTO customer(CustomerName, Password, RedemptionPoints) VALUES(%s, %s, 0)", (usr_name,hashlib.md5(pw1.encode("utf-8")).hexdigest()))
+            cur.execute(
+                "INSERT INTO customer(CustomerName, Password, "
+                "RedemptionPoints) VALUES(%s, %s, 0)",
+                (usr_name, hashlib.md5(pw1.encode("utf-8")).hexdigest()))
             con.commit()
             customer = usr_name
-            return render_template('index.html', customer = usr_name)
+            return render_template('index.html', customer=usr_name)
     return render_template('register.html')
 
 
 # 注册
-@app.route('/logout', methods=['GET','POST'])
+@app.route('/logout', methods=['GET', 'POST'])
 def logout():
     global customer
-    print("用户"+customer+"登出")
+    print("用户" + customer + "登出")
     customer = ""
     return render_template('login.html')
 
 
 # 登录
-@app.route('/login', methods=['GET','POST'])
+@app.route('/login', methods=['GET', 'POST'])
 def login():
     global customer
     if request.method == 'POST':
         usr_name = request.form['usr-name']
         pw1 = request.form['pw1'].encode("utf-8")
-        sql_query = "SELECT Password FROM customer WHERE CustomerName = '"+usr_name+"';"  
+        sql_query = "SELECT Password FROM customer "
+        "WHERE CustomerName = '" + usr_name + "';"
         tmp = select(sql_query)
         if len(tmp) == 0:
             print('登录失败')
@@ -94,7 +101,7 @@ def login():
         if tmp_pw == hashlib.md5(pw1).hexdigest():
             print('登录成功')
             customer = usr_name
-            return render_template('index.html', customer = customer)
+            return render_template('index.html', customer=customer)
         else:
             print('登录失败')
             flash('用户名和密码错误，请重试')
@@ -104,7 +111,7 @@ def login():
 
 
 # sql查询
-@app.route('/search_book/<argv>', methods=['GET','POST'])
+@app.route('/search_book/<argv>', methods=['GET', 'POST'])
 def search_book(argv):
     global customer
     if argv == 'cart':
@@ -114,22 +121,27 @@ def search_book(argv):
             branch_values = request.form.getlist('branch')
             if len(chkbox_values) != 0:
                 sql_query = "SELECT max(OrderID) FROM `order`"
-                OrderID = select(sql_query)[0][0]+1
+                OrderID = select(sql_query)[0][0] + 1
                 print(OrderID)
-                sql_query = "SELECT CustomerID FROM customer WHERE CustomerName='"+customer+"';"
+                sql_query = "SELECT CustomerID FROM customer "
+                "WHERE CustomerName='" + customer + "';"
                 CustomerID = select(sql_query)[0][0]
-                today=datetime.date.today()
-                sql_query = "INSERT IGNORE INTO `order` VALUES ('"+str(OrderID)+"', '"+str(CustomerID)+"', '"+str(today)+"','in cart', NULL, NULL)"
+                today = datetime.date.today()
+                sql_query = "INSERT IGNORE INTO `order` VALUES ('" + str(
+                    OrderID) + "', '" + str(CustomerID) + "', '" + str(
+                        today) + "','in cart', NULL, NULL)"
                 insert(sql_query)
             print(chkbox_values)
             for i in range(len(chkbox_values)):
                 ISBN = chkbox_values[i]
                 quantity = quantity_values[i]
                 branch = branch_values[i]
-                sql_query = "INSERT INTO `order_entry` VALUES ('"+str(OrderID)+"', '"+str(ISBN)+"', '"+str(branch)+"', '"+str(quantity)+"', 1.0)"
+                sql_query = "INSERT INTO `order_entry` VALUES ('" + str(
+                    OrderID) + "', '" + str(ISBN) + "', '" + str(
+                        branch) + "', '" + str(quantity) + "', 1.0)"
                 insert(sql_query)
             print(request.referrer)
-            return redirect(url_for('search_book', argv = 'search'))
+            return redirect(url_for('search_book', argv='search'))
 
     if argv == 'search':
         search_case = ""
@@ -139,32 +151,50 @@ def search_book(argv):
             query_txt = request.form['query_txt']
             session['search_case'] = search_case
             session['query_txt'] = query_txt
-        SelectFrom='''SELECT book.ISBN,book.Title,group_concat(DISTINCT compose.AuthorName) AS AuthorName,
-        book.Publisher,book.Price,book.ChineseIntro,book.EnglishIntro FROM book,compose '''
-        checked='checked="checked"'
+        SelectFrom = "SELECT book.ISBN,book.Title,group_concat"
+        "(DISTINCT compose.AuthorName) AS AuthorName,book.Publisher"
+        ",book.Price,book.ChineseIntro,book.EnglishIntro FROM book,compose "
+        checked = 'checked="checked"'
         if query_txt == "":
             query_txt = session['query_txt']
         if search_case == "":
             search_case = session['search_case']
         if search_case == 'book_name':
-            sql_query = SelectFrom+"WHERE (book.Title) LIKE '%"+query_txt+"%'" \
-                        "AND compose.ISBN = book.ISBN " \
-                        "GROUP BY book.ISBN;"
+            sql_query = SelectFrom+"WHERE (book.Title) LIKE '%"+query_txt+"%'"
+            "AND compose.ISBN = book.ISBN GROUP BY book.ISBN;"
             data = select(sql_query)
             session['sql_query'] = sql_query
-            return render_template('query.html', book=checked, query_txt=query_txt, data = data, customer = customer)
+            return render_template('query.html',
+                                   book=checked,
+                                   query_txt=query_txt,
+                                   data=data,
+                                   customer=customer)
         elif search_case == 'author':
-            sql_query = SelectFrom+"WHERE book.ISBN = compose.ISBN AND book.ISBN = compose.ISBN AND (compose.AuthorName) LIKE '%"+query_txt+"%' GROUP BY book.ISBN;"
+            sql_query = SelectFrom + "WHERE book.ISBN = compose.ISBN AND "
+            "book.ISBN = compose.ISBN AND (compose.AuthorName) "
+            "LIKE '%" + query_txt + "%' GROUP BY book.ISBN;"
             data = select(sql_query)
             session['sql_query'] = sql_query
-            return render_template('query.html', author=checked, query_txt=query_txt, data = data, customer = customer)
+            return render_template('query.html',
+                                   author=checked,
+                                   query_txt=query_txt,
+                                   data=data,
+                                   customer=customer)
         elif search_case == 'ch_book_info':
-            sql_query = SelectFrom+"WHERE ((book.ChineseIntro) LIKE '%"+query_txt+"%') AND compose.ISBN = book.ISBN GROUP BY book.ISBN;"
+            sql_query = SelectFrom + "WHERE ((book.ChineseIntro) "
+            "LIKE '%" + query_txt + "%') AND compose.ISBN = book.ISBN "
+            "GROUP BY book.ISBN;"
             data = select(sql_query)
             session['sql_query'] = sql_query
-            return render_template('query.html', ch_info=checked, query_txt=query_txt, data = data, customer = customer)
+            return render_template('query.html',
+                                   ch_info=checked,
+                                   query_txt=query_txt,
+                                   data=data,
+                                   customer=customer)
         elif search_case == 'stock':
-            sql_query = "SELECT book.Title,SUM(stock.Quantity) AS TotalStock FROM book LEFT JOIN stock ON book.ISBN = stock.ISBN WHERE (book.Title) LIKE '%"+query_txt+"%'GROUP BY Title;"
+            sql_query = "SELECT book.Title,SUM(stock.Quantity) AS TotalStock "
+            "FROM book LEFT JOIN stock ON book.ISBN = stock.ISBN "
+            "WHERE (book.Title) LIKE '%" + query_txt + "%'GROUP BY Title;"
             data = select(sql_query)
             html_str = ""
             for record in data:
@@ -172,22 +202,32 @@ def search_book(argv):
                 html_str += f'<tr><th>书名:</th><td>{record[0]}</td></tr>'
                 html_str += f'<tr><th>总库存:</th><td>{record[1]}</td></tr>'
                 html_str += "</table><br/>"
-            return render_template('query.html', stock=checked, query_txt=query_txt, content=html_str, customer = customer)
+            return render_template('query.html',
+                                   stock=checked,
+                                   query_txt=query_txt,
+                                   content=html_str,
+                                   customer=customer)
     if 'sql_query' in session:
-        return render_template('query.html', data = select(session['sql_query']), customer = customer)
-    return render_template('query.html', customer = customer)
+        return render_template('query.html',
+                               data=select(session['sql_query']),
+                               customer=customer)
+    return render_template('query.html', customer=customer)
 
 
 # 客户信息显示
-@app.route('/customer/<argv>', methods=['GET','POST'])
+@app.route('/customer/<argv>', methods=['GET', 'POST'])
 def Customer(argv):
     global customer
     if argv == "default":
-        return render_template('customer.html', customer = customer)
+        return render_template('customer.html', customer=customer)
     elif argv == "cart":
-        sql_query = "SELECT CustomerID FROM customer WHERE CustomerName='"+customer+"';"
+        sql_query = "SELECT CustomerID FROM customer "
+        "WHERE CustomerName='" + customer + "';"
         CustomerID = select(sql_query)[0][0]
-        sql_query = "SELECT order_entry.*,order.Date,order.Message,order.Reply,order.Status FROM order_entry INNER JOIN `order` ON order.OrderID = order_entry.OrderID WHERE order.Status = 'in cart' AND order.CustomerID = " + str(CustomerID) + ";"
+        sql_query = "SELECT order_entry.*,order.Date,order.Message,"
+        "order.Reply,order.Status FROM order_entry INNER JOIN `order` ON "
+        "order.OrderID = order_entry.OrderID WHERE order.Status = 'in cart' "
+        "AND order.CustomerID = " + str(CustomerID) + ";"
         data = select(sql_query)
         html_str = ""
         for record in data:
@@ -202,9 +242,12 @@ def Customer(argv):
             html_str += f'<tr><th>回复:</th><td>{record[7]}</td></tr>'
             html_str += f'<tr><th>状态:</th><td>{record[8]}</td></tr>'
             html_str += '</div></table></br>'
-        return render_template('customer.html', content = html_str, customer = customer)
+        return render_template('customer.html',
+                               content=html_str,
+                               customer=customer)
     elif argv == "info":
-        sql_query = "SELECT * FROM customer WHERE CustomerName='"+customer+"';"
+        sql_query = "SELECT * FROM customer "
+        "WHERE CustomerName='" + customer + "';"
         data = select(sql_query)
         html_str = ""
         for record in data:
@@ -213,11 +256,17 @@ def Customer(argv):
             html_str += f'<tr><th>用户名:</th><td>{record[1]}</td></tr>'
             html_str += f'<tr><th>积分:</th><td>{record[3]}</td></tr>'
             html_str += '</div></table></br>'
-        return render_template('customer.html', content = html_str, customer = customer)
+        return render_template('customer.html',
+                               content=html_str,
+                               customer=customer)
     elif argv == "history":
-        sql_query = "SELECT CustomerID FROM customer WHERE CustomerName='"+customer+"';"
+        sql_query = "SELECT CustomerID FROM customer "
+        "WHERE CustomerName='" + customer + "';"
         CustomerID = select(sql_query)[0][0]
-        sql_query = "SELECT order_entry.*,order.Date,order.Message,order.Reply,order.Status FROM order_entry INNER JOIN `order` ON order.OrderID = order_entry.OrderID WHERE order.Status = 'done' AND order.CustomerID = " + str(CustomerID) + ";"
+        sql_query = "SELECT order_entry.*,order.Date,order.Message,"
+        "order.Reply,order.Status FROM order_entry INNER JOIN `order` "
+        "ON order.OrderID = order_entry.OrderID WHERE order.Status = 'done' "
+        "AND order.CustomerID = " + str(CustomerID) + ";"
         data = select(sql_query)
         html_str = ""
         for record in data:
@@ -232,7 +281,9 @@ def Customer(argv):
             html_str += f'<tr><th>回复:</th><td>{record[7]}</td></tr>'
             html_str += f'<tr><th>状态:</th><td>{record[8]}</td></tr>'
             html_str += '</div></table></br>'
-        return render_template('customer.html', content = html_str, customer = customer)
+        return render_template('customer.html',
+                               content=html_str,
+                               customer=customer)
 
 
 if __name__ == "__main__":
