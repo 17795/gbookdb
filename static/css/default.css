@@ -1,6 +1,7 @@
 * {
     margin: 0;
     padding: 0;
+    color: white;
 }
 
 img {
@@ -11,7 +12,6 @@ img {
 a {
     text-decoration: none;
     outline: none;
-    color: white;
     padding-right: 5px;
     padding-left: 5px;
 }
@@ -43,6 +43,7 @@ body {
 
 input {
     background-color: transparent;
+    outline: none;
 }
 
 input::-webkit-input-placeholder,
@@ -113,6 +114,7 @@ header nav a {
 }
 
 footer {
+    margin: 40px 0 0 0;
     flex: 0 0 auto;
     background-color: rgba(0, 0, 0, 0.4);
     font-size: 12px;
@@ -131,7 +133,7 @@ footer .info {
     margin: 10px;
 }
 
-input[type="submit" i] {
+input[type="submit"i] {
     outline-style: none;
     border: none;
     border-radius: 5px;
@@ -141,11 +143,11 @@ input[type="submit" i] {
     color: black;
 }
 
-input[type="submit" i]:hover {
+input[type="submit"i]:hover {
     background: #599BF1;
     color: rgb(255, 255, 255, 0.9);
 }
-
+/*
 table,
 td,
 th {
@@ -177,4 +179,15 @@ tr {
 
 tr:hover {
     background: linear-gradient(#B7D3F8, rgb(255, 255, 255, 0.9));
+}*/
+
+
+.hidden {
+    visibility: hidden;
+}
+
+.warning {
+    color: red;
+    size: 40px;
+    margin: 5px;
 }

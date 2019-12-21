@@ -604,11 +604,16 @@ def show_sale_charts():
     print(active_name)
     print(active_point)
     # 门店销售数
-    # 这个SQL我有点搞不定
     # 最后获取三个string，分别为北京、上海、深圳6-12月各自的订单数就行了，类似 '120, 132, 101, 134, 90, 230'
-    # detail = select(sql_query)
+    sql_query = "SELECT sum(Quantity),MONTH(Date),BranchID FROM order_entry JOIN `order` ON order_entry.OrderID =  `order`.OrderID WHERE `order`.Status = 'done' GROUP BY MONTH(Date), BranchID;"
+    detail = select(sql_query)
+    print(detail)
+    bj_sale = {}
+    sh_sale = {}
+    sz_sale = {}
+    # 这里查询最后是怎么样一个排列顺序（按门店+月份？）我现在不太清楚，知道顺序了直接一个for循环就可了
     # 销售书籍类型占比饼图
-    sql_query = "SELECT book.Tag,SUM(order_entry.Quantity) FROM `book` INNER JOIN `order_entry` ON (`order_entry`.ISBN=book.ISBN) GROUP BY ISBN"
+    sql_query = "SELECT book.Tag,SUM(order_entry.Quantity) FROM `book` INNER JOIN `order_entry` ON (`order_entry`.ISBN=book.ISBN) GROUP BY `order_entry`.ISBN"
     detail = select(sql_query)
     type_count = {}
     for record in detail:

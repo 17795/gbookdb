@@ -22,23 +22,31 @@
 }
 
 .content .usr-info {
+    width: 560px;
+    min-height: 280px;
+    padding: 30px 0 0 0;
     display: flex;
     flex-direction: column;
     align-items: center;
+    justify-content: flex-start;
+    background-image: linear-gradient(to bottom, rgb(255, 255, 255, 0.3), rgb(255, 255, 255, 0));
+}
+
+.content .usr-info input {
+    letter-spacing: 2px;
 }
 
 .content .input-txt {
     font-size: 15px;
     color: white;
     text-align: center;
-    width: 560px;
+    width: 280px;
     height: 40px;
-    border-radius: 25px;
-    border: 1px rgb(200, 200, 200, 0.9) solid;
-    margin: 10px;
+    margin: 0px;
+    border: none;
     z-index: 5;
 }
-   
+
 .content .register-box {
     width: 100%;
     display: flex;
@@ -53,4 +61,20 @@
     margin: 10px;
 }
 
-/* 需要添加提交功能 */
+.content .input-wrap {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-end;
+    width:  370px;
+    border-radius: 25px;
+    border: 1px rgb(200, 200, 200, 0.9) solid;
+    margin: 5px;
+}
+
+.content .usr-info .sign {
+    height: 30px;
+    width: 30px;
+    background-size: 100% 100%;
+    margin: 0px 5px;
+}

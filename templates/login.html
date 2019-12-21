@@ -25,16 +25,22 @@
     <div class="content">
         <h1 class="title">Bookstore登录</h1>
         <div class="login">
-            <div class="warning">
-                <font size="4" color="red">{{get_flashed_messages()[0]}}</font>
-            </div>
             <form class="usr-info" action="/login" method="POST">
-                <input class="input-txt" id="name-txt" name="usr-name" type="text" placeholder="账&nbsp;号">
-                <input class="input-txt" name="pw1" type="password" placeholder="密&nbsp;码"/>  
-            <div class="btn">
-                <input class="input-submit" type="submit" value="登录">
-            </div>
+                <div class="login-switch">
+                    <input type="radio" name="account_case" id="customer" value="customer" checked="checked">
+                    <label for="customer">用户登录</label>
+                    <input type="radio" name="account_case" id="admin" value="admin">
+                    <label for="admin">管理员登录</label>
+                </div>
+                <input class="input-txt" id="name-txt" name="usr-name" type="text" placeholder="账号">
+                <input class="input-txt" name="pw1" type="password" placeholder="密码" />
+                <div class="btn">
+                    <input class="input-submit" type="submit" onclick="" value="登录">
+                </div>
             </form>
+            <div class="warning">
+                <p class="warning">{{get_flashed_messages()[0]}}</p>
+            </div>
         </div>
     </div>
 
@@ -48,4 +54,5 @@
         </div>
     </footer>
 </body>
+
 </html>

@@ -12,7 +12,6 @@
 .content .title {
     margin: 60px;
     font-size: 60px;
-    color: white;
 }
 
 .content .login {
@@ -21,21 +20,50 @@
     align-items: center;
 }
 
+.content .usr-info{
+    letter-spacing: 2px;
+}
+
+.content .login-switch {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.content .login-switch input {
+    display: none;
+}
+
+.content .login-switch label {
+    font-size: 25px;
+    padding: 25px 79px;
+    background-image: linear-gradient(to bottom, rgb(255, 255, 255, 0.5), rgb(255, 255, 255, 0));
+}
+
+.content .login-switch input:checked+label{
+    background-image: linear-gradient(to bottom, rgb(255, 255, 255, 0.8), rgb(255, 255, 255, 0));
+}
+
 .content .usr-info {
+    width: 560px;
+    min-height: 280px;
     display: flex;
     flex-direction: column;
     align-items: center;
+    justify-content: flex-start;
+    background-image: linear-gradient(to bottom, rgb(255, 255, 255, 0.3), rgb(255, 255, 255, 0));
 }
 
 .content .input-txt {
     font-size: 15px;
-    color: white;
     text-align: center;
-    width: 560px;
+    letter-spacing: 2px;
+
+    width: 380px;
     height: 40px;
     border-radius: 25px;
     border: 1px rgb(200, 200, 200, 0.9) solid;
-    margin: 10px;
+    margin: 15px 0;
     z-index: 5;
 }
 

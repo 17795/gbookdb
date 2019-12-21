@@ -4,12 +4,13 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge, Chrome=1">
     <link rel="icon" href="../icon.ico" type="image/x-icon">
-    <title>登录/注册</title>
+    <title>注册您的Bookstore账号</title>
     <meta name="description" content="Bookstore-user-login">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/default.css') }}">
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/register.css') }}">
-
+    <script type="text/javascript" src="{{ url_for('static', filename='js/jquery-3.3.1.min.js') }}"></script>
+    <script type="text/javascript" src="{{ url_for('static', filename='js/register.js') }}"></script>
 </head>
 
 
@@ -17,6 +18,7 @@
     <header>
         <div class="hd-main">
             <div class="logo"></div>
+
             <h1>Bookstore</h1>
             <nav>
                 <a href="login">返回登录</a>
@@ -28,13 +30,28 @@
         <h1 class="title">Bookstore注册</h1>
         <div class="register">
             <div class="warning">
-                <font size="4" color="red">{{get_flashed_messages()[0]}}</font>
+                <p>{{get_flashed_messages()[0]}}</p>
             </div>
-            <form class="usr-info" from action="/register" method="POST">
-                <input class="input-txt" name="usr-name" id="name-txt" type="text" placeholder="用户昵称">
-                <input class="input-txt" name="pw1" type="password" placeholder="请输入密码"/>
-                <input class="input-txt" name="pw2" type="password" placeholder="确认密码"/>
-                <input type="submit" value="提交信息">
+            <form class="usr-info" id="usr-info" from action="/register" method="POST" onsubmit="return checkinfo()">
+                <div class="input-wrap name">
+                    <input class="input-txt" name="usr-name" id="name-txt" type="text" placeholder="用户昵称"
+                        onblur="checkname()">
+                    <label for="name-txt" class="sign" id="sign-name"></label>
+                </div>
+                <p class="hidden warning name" id="re-name">用户名不能为空</p>
+                <div class="input-wrap pw1">
+                    <input class="input-txt" name="pw1" id="pw1" type="password" placeholder="请输入密码"
+                        onblur="checkpw1()" />
+                    <label for="pw1" class="sign" id="sign-pw1"></label>
+                </div>
+                <p class="hidden warning pw1" id="re-pw1">密码应为不少于6位的大小写字母、数字、特殊符号</p>
+                <div class="input-wrap pw2">
+                    <input class="input-txt" name="pw2" id="pw2" type="password" placeholder="确认密码"
+                        onblur="checkpw2()" />
+                    <label for="pw2" class="sign" id="sign-pw2"></label>
+                </div>
+                <p class="hidden warning pw2" id="re-pw2">密码不一致</p>
+                <input type="submit" id="submit" value="提交信息" />
             </form>
         </div>
     </div>
@@ -50,8 +67,6 @@
             </div>
         </div>
     </footer>
-
-
 </body>
 
 </html>
