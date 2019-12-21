@@ -14,28 +14,25 @@
  - 管理部分的后端代码基本完成，经初步测试没有明显bug。
  - 数据库结构方面，修改```customer.RedemptionPoints```字段的默认初始值为0，修改```order.Status```字段的默认初始值为```not done```。
 
-2019-12-7 李南鸽
+2019-12-21 14:00
 
-* 命名为order的表格在`select * from order`时会报错：
+* <font size=5 color=red>备份使用说明</font>
+    * 调用logg.py文件
+    * main函数中打开log文件：logger = logg.get_logger(\_\_name__)
+    * 输出信息：logger.info('内容’)  logger.debug('内容’)  logger.warning('内容’)  logger.error('内容’) 
+    * <font color=red>mysqldump</font>
+        * 调试中。。。
 
-> ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'order' at line 1
 
-解决方案：因为’order’是保留字，查询SQL语句改为`select * from 'order'(反点)`即可。建议修改表格名。
 
 ### 已完成的功能
+
 面向客户的部分：
 
- - ~~图书信息的相关查询实现~~
-
+ - 图书信息的相关查询实现
  - 用户注册的函数
-
-    **更新**
-
-    注册函数已经可以从web提交的信息生成sql语句
-
-    尚未实现：mysql中的insert数据
-
  - 登录、查询、书店主页的页面设计完成
+ - 登录、注册页面和后端程序的对接
 
 面向管理人员的部分：
 
@@ -43,12 +40,11 @@
  - 对各个表格的添加、删除、修改、查询、通过SQL语句查询功能均已实现
  - 表格中长文本的显示方式优化
  - 修改时对空信息默认不更改
+ - 选择并实现扩展功能
+ - 作者简介和图书标签字段补完
 
 ### 待完成的功能
 
-面向客户的部分：
-
- - 登录、注册页面和后端程序的对接
  - 根据登录状态不同修改查询功能的权限
  - 购物车/订单功能
 
@@ -57,16 +53,11 @@
  - 多后台并行时数据库业务的一致性和原子性完善
  - 界面美化
 
-其他部分：
-
- - 选择并实现扩展功能
- - 如果可能的话，部署到服务器
- - 作者简介和图书标签字段补完
-
 扩展功能：
    1. 【推荐功能】标签评分销量推荐
    2. 【决策支持】会员积分和抵扣
-   3. 【数据功能扩展】根据订单状态统计销售数据
+   3. 【数据功能扩展】根据订单状态统计销售数据 ECharts
+      4. 【其他】如果可能的话，部署到服务器
 
 ### GitHub操作相关
 [Git配置](https://git-scm.com/book/zh/v2/%E8%B5%B7%E6%AD%A5-%E5%88%9D%E6%AC%A1%E8%BF%90%E8%A1%8C-Git-%E5%89%8D%E7%9A%84%E9%85%8D%E7%BD%AE)
