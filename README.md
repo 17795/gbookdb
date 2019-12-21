@@ -5,10 +5,6 @@
 
 ## 数据库结构更新
 
-2019-12-4 14:10 
-
- - 更新数据库结构，添加了order表中的Message, Reply, Status字段（NULL）用于订单留言、回复和订单状态；添加Book表中的Tag用于推荐图书（有部分数据，部分为NULL）；添加author表AuthorIntro信息，修改AuthorIntro类型为TEXT；添加Customer表中RedemptionPoints字段用于积分抵扣。至此数据库结构基本完成，需要填充数据和修改后端代码。扩展任务已更新到```README.md```。
-
 2019-12-4 18:00
 
  - 管理部分的后端代码基本完成，经初步测试没有明显bug。
@@ -16,13 +12,18 @@
 
 2019-12-21 14:00
 
-* <font size=5 color=red>备份使用说明</font>
+* 备份使用说明
     * 调用logg.py文件
     * main函数中打开log文件：logger = logg.get_logger(\_\_name__)
     * 输出信息：logger.info('内容’)  logger.debug('内容’)  logger.warning('内容’)  logger.error('内容’) 
-    * <font color=red>mysqldump</font>
+    * mysqldump
         * 调试中。。。
 
+2019-12-22 00:30
+
+* 前端代码几乎全部修改。register 可以在用户本地检查密码是否相同，登录和注册界面 UI 优化，查询界面添加动态图书和 UI 优化，购物车选项修改到图书信息界面。
+* query.html，bookinfo.html 和 app.py 交互没有完成，因为修改结构的关系 form 的 action 和 app.py 目前对不上（すみません！）
+* 前端有待进一步优化
 
 
 ### 已完成的功能
