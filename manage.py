@@ -1,6 +1,7 @@
 import json
 from flask import Flask, render_template, request
 from pymysql import *
+import logg
 
 con = connect("localhost", "root", "", "gbookdb")
 
@@ -129,16 +130,16 @@ def show_order(argv):
         print(OrderID)
         Status = select("SELECT Status FROM `order` WHERE OrderID = '" + OrderID + "'")[0][0]
         if (Status == "done" or Status == "under stock"):
-        	return render_template('manage_order.html', var = 'query+all')
+            return render_template('manage_order.html', var = 'query+all')
         Entries = select("SELECT BranchID,ISBN FROM order_entry WHERE OrderID = '" + OrderID + "'")
         print(Entries)
         Quantity = []
         for Entry in Entries:
-        	Quantity.append(int(select("SELECT sum(Quantity) FROM order_entry WHERE OrderID = '" + OrderID + "' and BranchID = '" + Entry[0] + "' and ISBN = '" + Entry[1] +"';")[0][0]))
+            Quantity.append(int(select("SELECT sum(Quantity) FROM order_entry WHERE OrderID = '" + OrderID + "' and BranchID = '" + Entry[0] + "' and ISBN = '" + Entry[1] +"';")[0][0]))
         print(Quantity)
         Stock = []
         for Entry in Entries:
-        	Stock.append((select("SELECT sum(Quantity) FROM stock WHERE BranchID = '" + Entry[0] + "' and ISBN = '" + Entry[1] +"';")[0][0]))
+            Stock.append((select("SELECT sum(Quantity) FROM stock WHERE BranchID = '" + Entry[0] + "' and ISBN = '" + Entry[1] +"';")[0][0]))
         print(Stock)
         for i in range(len(Quantity)):
         	if (Stock[i] is None or int(Stock[i]) < Quantity[i]):
