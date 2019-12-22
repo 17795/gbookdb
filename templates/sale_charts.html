@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <title>销售信息图表</title>
-    <script src="{{ url_for('static', filename='js/echarts.min.js') }}"></script>
-    <script src="{{ url_for('static', filename='js/jquery-3.3.1.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='echarts.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='jquery-3.3.1.min.js') }}"></script>
 </head>
 <body>
 <div class="text" style=" text-align:center;font-size:23px"><br>销售信息报表<br><br></div>
@@ -44,13 +44,13 @@
             },
             yAxis: {
             type: 'category',
-            data: ['柴静','王思聪','马云','马化腾','王石','白岩松','李南鸽','柯岩','王心怡','许瑞晗']
+            data: [{{ customer_name|safe }}]
             },
             series: [
             {
             name: '用户积分',
             type: 'bar',
-            data: [0,20,30,40,50,60,85,105,128,234]
+            data: [{{customer_point|safe}}]
             },
             ]
 };
@@ -94,13 +94,13 @@ if (option && typeof option === "object") {
             },
             yAxis: {
             type: 'category',
-            data: ['王心怡','李南鸽','柯岩','柴静','王思聪','马云','马化腾','王石','白岩松','许瑞晗']
+            data: [{{ active_name|safe }}]
             },
             series: [
             {
             name: '最近订单数',
             type: 'bar',
-            data: [1,2,3,4,5,6,7,8,9,10]
+            data: [{{ active_point|safe }}]
             },
             ]
 };
@@ -155,19 +155,19 @@ option = {
             name:'北京',
             type:'line',
             stack: '订单数',
-            data:[120, 132, 101, 134, 90, 230]
+            data:[{{ bj_str }}]
         },
         {
             name:'上海',
             type:'line',
             stack: '订单数',
-            data:[220, 182, 191, 234, 290, 330]
+            data:[{{ sh_str }}]
         },
         {
             name:'深圳',
             type:'line',
             stack: '订单数',
-            data:[150, 232, 201, 154, 190, 330]
+            data:[{{ sz_str }}]
         }
     ]
 };
@@ -197,7 +197,8 @@ if (option && typeof option === "object") {
                 legend: {
                     orient: 'vertical',
                     left: 'left',
-                    data: ['犯罪','剧情','爱情','同性','动作','喜剧','战争','灾难','动画','奇幻','历史','科幻','悬疑','冒险','歌舞','音乐','古装','传记','家庭','惊悚','运动','纪录片','情色','儿童','西部','武侠','恐怖']
+                    data: [{{ type_str|safe }}
+                    ]
                 },
                 series : [
                     {
@@ -206,33 +207,7 @@ if (option && typeof option === "object") {
                     radius : '55%',
                     center: ['50%', '60%'],
                     data:[
-                {value:45, name:'犯罪'},
-{value:188, name:'剧情'},
-{value:58, name:'爱情'},
-{value:7, name:'同性'},
-{value:32, name:'动作'},
-{value:48, name:'喜剧'},
-{value:19, name:'战争'},
-{value:2, name:'灾难'},
-{value:35, name:'动画'},
-{value:37, name:'奇幻'},
-{value:12, name:'历史'},
-{value:25, name:'科幻'},
-{value:31, name:'悬疑'},
-{value:44, name:'冒险'},
-{value:5, name:'歌舞'},
-{value:6, name:'音乐'},
-{value:8, name:'古装'},
-{value:13, name:'传记'},
-{value:24, name:'家庭'},
-{value:36, name:'惊悚'},
-{value:1, name:'运动'},
-{value:4, name:'纪录片'},
-{value:1, name:'情色'},
-{value:5, name:'儿童'},
-{value:4, name:'西部'},
-{value:4, name:'武侠'},
-{value:2, name:'恐怖'}
+                        {{ type_count_str|safe }}
             ],
                     itemStyle: {
                         emphasis: {

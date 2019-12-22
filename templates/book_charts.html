@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <title>图书信息报表</title>
-    <script src="{{ url_for('static', filename='js/echarts.min.js') }}"></script>
-    <script src="{{ url_for('static', filename='js/jquery-3.3.1.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='echarts.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='jquery-3.3.1.min.js') }}"></script>
 </head>
 <body>
 <div class="text" style=" text-align:center;font-size:23px"><br>图书信息报表<br><br></div>
@@ -45,13 +45,13 @@
             },
             yAxis: {
             type: 'category',
-            data: ['水浒传 中华书局','古文观止 中华书局','哈利·波特与魔法石 人民文学出版社','房思琪的初恋乐园 北京联合出版公司','白夜行 南海出版公司','百年孤独 南海出版公司','许三观卖血记 北京十月文艺出版社','父与子全集 中国工人出版社','安徒生童话故事集 人民文学出版社','三国演义（全二册） 人民文学出版社','飘 译林出版社','1984 北京十月文艺出版社','围城 人民文学出版社','三国演义 岳麓书社','活着 北京十月文艺出版社','活着 作家出版社','诗经 北京出版社','红楼梦 人民文学出版社','红楼梦 三秦出版社','红楼梦 人民文学出版社']
+            data: [{{ book_name |safe}}]
             },
             series: [
             {
             name: '图书得分',
             type: 'bar',
-            data: [9.1,9.1,9.1,9.2,9.2,9.2,9.2,9.2,9.2,9.2,9.3,9.3,9.3,9.4,9.4,9.4,9.4,9.6,9.7,9.9]
+            data: [{{ book_score |safe}}]
             },
             ]
 };
@@ -77,14 +77,14 @@ if (option && typeof option === "object") {
                         rotate:70
                     },
                 type: 'category',
-                data: ['犯罪','剧情','惊怵','冒险','西部','神秘','传记','历史','战争','动作','科幻','奇幻','爱情','恐怖','黑色','喜剧','动画','家庭','音乐剧','音乐','运动']
+                data: [{{ gnere_str |safe}}]
                 },
                 yAxis: {
                     scale:true,
                     type: 'value'
                 },
                 series: [{
-                data: [8.37, 8.32, 8.33, 8.4, 8.33, 8.35, 8.28, 8.35, 8.38, 8.35, 8.36, 8.36, 8.32, 8.3, 8.29, 8.29, 8.26, 8.26, 8.25, 8.4, 8.16],
+                data: [{{ gnere_score |safe}}],
                 type: 'bar'
                 }]
             };
