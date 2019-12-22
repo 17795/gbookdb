@@ -17,7 +17,6 @@
     * main函数中打开log文件：logger = logg.get_logger(\_\_name__)
     * 输出信息：logger.info('内容’)  logger.debug('内容’)  logger.warning('内容’)  logger.error('内容’) 
     * mysqldump
-        * 调试中。。。
 
 2019-12-22 00:30
 
