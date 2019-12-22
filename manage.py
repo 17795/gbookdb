@@ -528,7 +528,7 @@ def show_book_charts():
     book_name = ''
     book_score = ''
     for record in detail_top:
-        print(record)
+        # print(record)
         if book_name == '':
             book_name = "'" + record[1]+' ' + record[2]+"'"
             book_score = str(record[8])
@@ -559,8 +559,8 @@ def show_book_charts():
         gnere_score = ",'"+str(i[1])+"'"+gnere_score
     print(gnere_str)
     print(gnere_score)
-    return render_template('book_charts.html')
-    # return render_template('book_charts.html', book_name=book_name, book_score=book_score)
+    # return render_template('book_charts.html')
+    return render_template('book_charts.html', book_name=book_name, book_score=book_score, gnere_str=gnere_str[1:], gnere_score=gnere_score[1:])
 
 
 @app.route('/show_sale_charts', methods=['GET', 'POST'])
@@ -608,10 +608,22 @@ def show_sale_charts():
     sql_query = "SELECT sum(Quantity),MONTH(Date),BranchID FROM order_entry JOIN `order` ON order_entry.OrderID =  `order`.OrderID WHERE `order`.Status = 'done' GROUP BY MONTH(Date), BranchID;"
     detail = select(sql_query)
     print(detail)
-    bj_sale = {}
-    sh_sale = {}
-    sz_sale = {}
-    # 这里查询最后是怎么样一个排列顺序（按门店+月份？）我现在不太清楚，知道顺序了直接一个for循环就可了
+    bj_sale = {7:0,8:0,9:0,10:0,11:0,12:0}
+    sh_sale = {7:0,8:0,9:0,10:0,11:0,12:0}
+    sz_sale = {7:0,8:0,9:0,10:0,11:0,12:0}
+    for record in detail:
+        if record[2] == '1':
+            bj_sale[record[1]] = int(record[0])
+        elif record[2] == '2':
+            sh_sale[record[1]] = int(record[0])
+        elif record[2] == '3':
+            sz_sale[record[1]] = int(record[0])
+    bj_str = str(bj_sale[7])+','+str(bj_sale[8])+','+str(bj_sale[9])+','+str(bj_sale[10])+','+str(bj_sale[11])+','+str(bj_sale[12])
+    sh_str = str(sh_sale[7])+','+str(sh_sale[8])+','+str(sh_sale[9])+','+str(sh_sale[10])+','+str(sh_sale[11])+','+str(sh_sale[12])
+    sz_str = str(sz_sale[7])+','+str(sz_sale[8])+','+str(sz_sale[9])+','+str(sz_sale[10])+','+str(sz_sale[11])+','+str(sz_sale[12])
+    print(bj_str)
+    print(sh_str)
+    print(sz_str)
     # 销售书籍类型占比饼图
     sql_query = "SELECT book.Tag,SUM(order_entry.Quantity) FROM `book` INNER JOIN `order_entry` ON (`order_entry`.ISBN=book.ISBN) GROUP BY `order_entry`.ISBN"
     detail = select(sql_query)
@@ -630,8 +642,10 @@ def show_sale_charts():
     type_count_str = type_count_str[:-1]
     print(type_str)
     print(type_count_str)
-    return render_template('sale_charts.html')
+    return render_template('sale_charts.html', customer_name=customer_name, customer_point=customer_point, active_name=active_name, active_point=active_point, bj_str=bj_str, sh_str=sh_str, sz_str=sz_str, type_str=type_str, type_count_str=type_count_str)
 
 
 if __name__ == "__main__":
+    logger = logg.get_logger(__name__)
+    logg.dump_MySQL(rootPassword, True)
     app.run(debug=True)
