@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge, Chrome=1">
-    <link rel="icon" href="icon.ico" type="image/x-icon">
+    <link rel="icon" href="{{ url_for('static', filename='icon.ico') }}" type="image/x-icon">
     <title>个人信息</title>
     <meta name="description" content="Bookstore-index">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -38,19 +38,19 @@
         <div class="useraction">
             <ul>
                 <li>
-                    <a href="/customer/cart"><span>购物车</span></a>
+                    <a href="/customer/info" target="_parent"><span>我的信息</span></a>
                 </li>
                 <li>
-                    <a href="/customer/info"><span>我的信息</span></a>
+                    <a href="/customer/cart" target="_parent"><span>购物车</span></a>
                 </li>
                 <li>
-                    <a href="/customer/history"><span>历史订单</span></a>
+                    <a href="/customer/history" target="_parent"><span>历史订单</span></a>
                 </li>
                 <li>
-                    <a href="/customer/reply"><span>订单留言</span></a>
+                    <a href="/customer/message" target="_parent"><span>订单留言</span></a>
                 </li>
                 <li>
-                    <a href="/customer/changepw"><span>修改密码</span></a>
+                    <a href="/customer/changepw" target="_parent"><span>修改密码</span></a>
                 </li>
             </ul>
         </div>
