@@ -103,11 +103,6 @@ def login():
         return render_template('login.html')
 
 
-'''# 图书主页
-@app.route('/book/<artv>', methods=['GET','POST'])
-def book(argv):
-'''
-
 # sql查询
 @app.route('/search_book/<argv>', methods=['GET','POST'])
 def search_book(argv):
@@ -186,10 +181,11 @@ def search_book(argv):
 # 图书主页
 @app.route('/book/<argv>', methods=['GET','POST'])
 def book(argv):
-    sql_query="SELECT book.ISBN,book.Title,group_concat(DISTINCT compose.AuthorName) AS AuthorName,"\
-    "book.Publisher,book.Price,book.ChineseIntro,book.EnglishIntro FROM book,compose WHERE book.ISBN LIKE "+\
-    argv+" AND compose.ISBN = book.ISBN GROUP BY book.ISBN;"
-    return render_template('bookinfo.html', data = select(sql_query), customer=customer)
+    SearchBook = [""]*4
+    sql_query = "SELECT book.ISBN,book.Title,group_concat(DISTINCT compose.AuthorName) AS AuthorName,"\
+        "book.Publisher,book.Price,book.ChineseIntro FROM book,compose WHERE book.ISBN = "+\
+        argv+" AND compose.ISBN = book.ISBN GROUP BY book.ISBN;"
+    return render_template('bookinfo.html', data=select(sql_query)[0], customer=customer)
 
 # 客户信息显示
 @app.route('/customer/<argv>', methods=['GET','POST'])

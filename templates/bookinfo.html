@@ -32,25 +32,24 @@
             <div class="search">
                 <form class="search-form" action="/search_book/search" method="POST">
                     <div class="search-switch">
-                        <input type="radio" name="search_case" id="book_name" value="book_name" {{ book |safe}}>
+                        <input type="radio" name="search_case" id="book_name" value="book_name" checked="checked">
                         <label for="book_name">书名</label>
-                        <input type="radio" name="search_case" id="author" value="author" {{ author |safe}}>
+                        <input type="radio" name="search_case" id="author" value="author">
                         <label for="author">作者</label>
-                        <input type="radio" name="search_case" id="stock" value="stock" {{ stock |safe}}>
+                        <input type="radio" name="search_case" id="stock" value="stock">
                         <label for="stock">库存</label>
-                        <input type="radio" name="search_case" id="ch_book_info" value="ch_book_info" {{ ch_info |safe}}>
+                        <input type="radio" name="search_case" id="ch_book_info" value="ch_book_info">
                         <label for="ch_book_info">中文关键字</label>
                     </div>
                     <div class="search-box">
                         <input class="input-btn" id="search-btn" name="search_btn" type="button" value="">
-                        <input class="input-txt" id="search-txt" name="query_txt" type="text" tabindex="1" value={{ query_txt |safe}}>
+                        <input class="input-txt" id="search-txt" name="query_txt" type="text" tabindex="1" value={{ data[1] |safe}}>
                     </div>
                 </form>
             </div>
             </div>
         <form class="top-info" action="/search_book/cart" method="POST">
         <div class="leftcolumn">
-            {% for record in data %}
             <figure class='book'>
 
                 <!-- Front -->
@@ -59,8 +58,8 @@
                     <li>
                         <div class="coverDesign grey">
                             <span class="ribbon">HOT</span>
-                            <h1>{{record[1]}}</h1>
-                            <p>{{record[2]}}</p>
+                            <h1>{{data[1]}}</h1>
+                            <p>{{data[2]}}</p>
                         </div>
                     </li>
                     <li></li>
@@ -71,7 +70,7 @@
                 <ul class='page'>
                     <li></li>
                     <li>
-                        <a class="btn" href="/book/{{record[0]}}">查看图书</a>
+                        <a class="btn" href="/book/{{data[0]}}">查看图书</a>
                     </li>
                     <li></li>
                     <li></li>
@@ -91,13 +90,12 @@
             </figure>
         </div>
         <div class="rightcolumn">
-            <h1>{{record[1]}}</h1>
+            <h1>{{data[1]}}</h1>
             <table class="infotable">
-            <tr><th>ISBN:</th><td>{{record[0]}}</td></tr>
-            <tr><th>书名:</th><td>{{record[1]}}</td></tr>
-            <tr><th>作者:</th><td>{{record[2]}}</td></tr>
-            <tr><th>出版社:</th><td>{{record[3]}}</td></tr>
-            <tr><th>售价:</th><td>{{record[4]}}</td></tr>
+            <tr><th>ISBN:</th><td>{{data[0]}}</td></tr>
+            <tr><th>作者:</th><td>{{data[2]}}</td></tr>
+            <tr><th>出版社:</th><td>{{data[3]}}</td></tr>
+            <tr><th>售价:</th><td>{{data[4]}}</td></tr>
             <tr><th>数量:</th><td><input type="text" name="quantity"></td><th>门店:</th><td>
             <select name="branch" id="pro">
                 <option value="1">北京</option>
@@ -112,9 +110,8 @@
         </form>
         <div class="intro">
             <h2>简介:</h2>
-            <p class="intro">{{record[5]}}</p>
+            <p class="intro">{{data[5]}}</p>
         </div>
-        {% endfor %}
     </div>
     <footer>
         <div class="ft-main">
