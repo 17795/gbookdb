@@ -17,13 +17,6 @@
     * main函数中打开log文件：logger = logg.get_logger(\_\_name__)
     * 输出信息：logger.info('内容’)  logger.debug('内容’)  logger.warning('内容’)  logger.error('内容’) 
     * mysqldump
-        * 调试中。。。
-
-2019-12-22 00:30
-
-* 前端代码几乎全部修改。register 可以在用户本地检查密码是否相同，登录和注册界面 UI 优化，查询界面添加动态图书和 UI 优化，购物车选项修改到图书信息界面。
-* query.html，bookinfo.html 和 app.py 交互没有完成，因为修改结构的关系 form 的 action 和 app.py 目前对不上（すみません！）
-* 前端有待进一步优化
 
 
 ### 已完成的功能

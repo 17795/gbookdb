@@ -1,0 +1,129 @@
+.content {
+    flex: 1 0 auto;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}
+
+.content-main {
+    width: 840px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+}
+
+.content .leftcolumn {
+    min-width: 200px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    background-image: linear-gradient(to bottom, rgba(255, 255, 255, 0.4), rgba(255, 255, 255, 0));
+}
+
+.content .leftcolumn .userinfo {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+    height: 100px;
+    background-image: linear-gradient(to bottom, rgba(99, 180, 255, 0.3), rgba(154, 215, 255, 0.03));
+}
+
+.content .leftcolumn .userinfo img {
+    width: 60px;
+    height: 60px;
+    background-size: 100% 100%;
+    border-radius: 30px;
+    margin: 20px;
+}
+
+.content .leftcolumn nav {
+    flex: 0 1 auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: baseline;
+}
+
+.content .leftcolumn nav a {
+    width: 200px;
+    font-size: 20px;
+    color: rgba(255, 255, 255, 0.9);
+    padding: 10px 20px;
+}
+
+.content .leftcolumn nav a:hover{
+    color: rgba(30, 30, 30, 0.9);
+}
+
+.content .rightcolumn {
+    width: 440px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.content .rightcolumn .top-info{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+}
+
+.content .rightcolumn .top-info .input-wrap{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    width:  370px;
+    border-radius: 25px;
+    height: 50px;
+    border: 1px rgb(200, 200, 200, 0.9) solid;
+    margin: 5px;
+}
+
+.content .rightcolumn .top-info .input-txt {
+    font-size: 20px;
+    color: white;
+    text-align: center;
+    width: 280px;
+    height: 50px;
+    margin: 0px;
+    border: none;
+    z-index: 5;
+}
+
+table,
+td,
+th,
+table a {
+    color: black;
+    border: 1px solid rgb(200, 200, 200, 0.9);
+    font-size: 14px;
+    -webkit-user-select: text;
+    -user-select: text;
+}
+
+table {
+    width: 100%;
+    margin: 10px;
+}
+
+th {
+    width: 20%;
+    padding: 15px;
+    border: 2px solid black;
+    background-color: rgb(200, 200, 200, 0.9);
+}
+
+td {
+    padding: 15px;
+}
+
+tr {
+    background: rgb(255, 255, 255, 0.9);
+}
+
+tr:hover {
+    background: linear-gradient(#B7D3F8, rgb(255, 255, 255, 0.9));
+}

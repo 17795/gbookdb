@@ -147,40 +147,6 @@ input[type="submit"i]:hover {
     background: #599BF1;
     color: rgb(255, 255, 255, 0.9);
 }
-/*
-table,
-td,
-th {
-    color: black;
-    border: 1px solid black;
-    font-size: 14px;
-    -webkit-user-select: text;
-    -user-select: text;
-}
-
-table {
-    width: 100%;
-}
-
-th {
-    width: 20%;
-    padding: 15px;
-    border: 2px solid black;
-    background-color: rgb(200, 200, 200, 0.9);
-}
-
-td {
-    padding: 15px;
-}
-
-tr {
-    background: rgb(255, 255, 255, 0.9);
-}
-
-tr:hover {
-    background: linear-gradient(#B7D3F8, rgb(255, 255, 255, 0.9));
-}*/
-
 
 .hidden {
     visibility: hidden;
