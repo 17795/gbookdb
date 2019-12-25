@@ -10,6 +10,7 @@ app = Flask(__name__, static_url_path='')
 
 # sql查询
 def select(sql_query):
+    logger.info(sql_query)
     cur = con.cursor()
     cur.execute(sql_query)
     print("SELECT FROM gbookdb OK")
@@ -19,6 +20,7 @@ def select(sql_query):
 
 
 def insert(sql_query):
+    logger.info(sql_query)
     cur = con.cursor()
     cur.execute(sql_query)
     con.commit()
@@ -44,10 +46,10 @@ def show_stock(argv):
             sql_query = argv[1:]
         else:
             info = argv.split('+')
-            sql_query = "SELECT COUNT(*) FROM stock WHERE ISBN = '"+info[0]+"' and Branch = '"+info[1]+"';"
+            sql_query = "SELECT COUNT(*) FROM stock WHERE ISBN = '"+info[0]+"' and BranchID = '"+info[1]+"';"
             total = int(select(sql_query)[0][0])
             print(total)
-            sql_query = "SELECT * FROM stock WHERE ISBN = '"+info[0]+"' and Branch = '"+info[1]+"';"
+            sql_query = "SELECT * FROM stock WHERE ISBN = '"+info[0]+"' and BranchID = '"+info[1]+"';"
         detail = select(sql_query)
         rows = []
         for record in detail:
@@ -64,7 +66,7 @@ def show_stock(argv):
         print(ISBN)
         Branch = request.form['Branch']
         Stock = request.form['Stock']
-        sql_query = "INSERT INTO stock (`ISBN`,`Branch`,`Stock`) VALUES('"+ISBN+"','"+Branch+"',"+Stock+");"
+        sql_query = "INSERT INTO stock (`ISBN`,`BranchID`,`Quantity`) VALUES('"+ISBN+"','"+Branch+"',"+Stock+");"
         insert(sql_query)
         return render_template('manage_stock.html', var = 'query+all')
     if argv == 'editEntry':
@@ -73,7 +75,7 @@ def show_stock(argv):
         print(ISBN)
         Branch = request.form['Branch']
         Stock = request.form['Stock']
-        sql_query = "UPDATE stock SET Stock="+Stock+" WHERE ISBN='"+ISBN+"'and Branch='"+Branch+"';"
+        sql_query = "UPDATE stock SET Quantity="+Stock+" WHERE ISBN='"+ISBN+"'and BranchID='"+Branch+"';"
         insert(sql_query)
         return render_template('manage_stock.html', var = 'query+all')
     if argv == 'removeEntry':
@@ -81,7 +83,7 @@ def show_stock(argv):
         ISBN = request.form['ISBN']
         print(ISBN)
         Branch = request.form['Branch']
-        sql_query = "DELETE FROM stock" + " WHERE ISBN='"+ISBN+"'and Branch='"+Branch+"';"
+        sql_query = "DELETE FROM stock" + " WHERE ISBN='"+ISBN+"'and BranchID='"+Branch+"';"
         insert(sql_query)
         return render_template('manage_stock.html', var = 'query+all')
     if argv == 'searchEntry':
@@ -648,5 +650,5 @@ def show_sale_charts():
 
 if __name__ == "__main__":
     logger = logg.get_logger(__name__)
-    logg.dump_MySQL(rootPassword, True)
+    logg.dump_MySQL(True)
     app.run(debug=True)
