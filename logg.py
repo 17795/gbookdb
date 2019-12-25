@@ -34,14 +34,14 @@ def get_logger(name):
 
 
 # 数据库名称固定为gbookdb
-# 参数分别表示数据库root的密码、是否生成对应数据库
-def dump_MySQL(password,toDump):
+# 运行app.py后需要输入root密码
+def dump_MySQL(toDump):
     if toDump:
         if not os.path.exists('backup'):
             os.mkdir('backup')
         dbname = 'gbookdb'
         sqlname = str(time.strftime("%H-%M-%S", time.localtime())) + '.sql'
-        sql = 'mysqldump -uroot -p' + password +' '+ dbname + '>' + SQL_PATH + sqlname
+        sql = 'mysqldump -uroot -p ' + dbname + '>' + SQL_PATH + sqlname
         os.system(sql)
 
 
