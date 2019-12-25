@@ -32,15 +32,16 @@ def get_logger(name):
 # logger.warning('管理员%s修改' % sql_query)
 # logger.error('用户查询%s失败' % sql_query)
 
-# 命令行运行有点问题
-# 可能与mysql的权限、密码有关
-def dump_MySQL(toDump):
+
+# 数据库名称固定为gbookdb
+# 参数分别表示数据库root的密码、是否生成对应数据库
+def dump_MySQL(password,toDump):
     if toDump:
         if not os.path.exists('backup'):
             os.mkdir('backup')
         dbname = 'gbookdb'
         sqlname = str(time.strftime("%H-%M-%S", time.localtime())) + '.sql'
-        sql = 'mysqldump -uroot -p ' + ' ' + dbname + '>' + SQL_PATH + sqlname
+        sql = 'mysqldump -uroot -p' + password +' '+ dbname + '>' + SQL_PATH + sqlname
         os.system(sql)
 
 
