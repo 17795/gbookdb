@@ -131,42 +131,26 @@ option = {
     legend: {
         data:['北京','上海','深圳']
     },
-    grid: {
-        left: '3%',
-        right: '4%',
-        bottom: '3%',
-        containLabel: true
-    },
-    toolbox: {
-        feature: {
-            saveAsImage: {}
-        }
-    },
     xAxis: {
         type: 'category',
-        boundaryGap: false,
         data: ['7月','8月','9月','10月','11月','12月']
     },
     yAxis: {
         type: 'value'
     },
-    series: [
-        {
+    series: [{
             name:'北京',
             type:'line',
-            stack: '订单数',
             data:[{{ bj_str }}]
         },
         {
             name:'上海',
             type:'line',
-            stack: '订单数',
             data:[{{ sh_str }}]
         },
         {
             name:'深圳',
             type:'line',
-            stack: '订单数',
             data:[{{ sz_str }}]
         }
     ]
