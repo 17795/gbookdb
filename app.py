@@ -2,6 +2,7 @@ from flask import *
 from pymysql import *
 import hashlib
 import datetime
+import logg
 
 con = connect("localhost", "root", "", "gbookdb")
 app = Flask(__name__, static_url_path='')
@@ -27,6 +28,7 @@ def littleselect(sql_query):
 def select(sql_query):
     cur = con.cursor()
     cur.execute(sql_query)
+    logger.info(sql_query)
     data = cur.fetchall()
     return data
 
@@ -34,6 +36,7 @@ def select(sql_query):
 def insert(sql_query):
     cur = con.cursor()
     cur.execute(sql_query)
+    logger.info('***新增数据*** %s' % sql_query)
     con.commit()
 
 
@@ -97,7 +100,7 @@ def register():
 @app.route('/logout', methods=['GET','POST'])
 def logout():
     global customer
-    print("用户"+customer+"登出")
+    logger.info("用户"+customer+"登出")
     customer = ""
     return render_template('login.html')
 
@@ -112,7 +115,7 @@ def login():
         sql_query = "SELECT Password FROM customer WHERE CustomerName = '"+usr_name+"';"  
         tmp = select(sql_query)
         if len(tmp) == 0:
-            print('登录失败')
+            print('输入用户名和密码错误')
             flash('用户名和密码错误，请重试')
             return render_template('login.html')
         tmp_pw = tmp[0][0]
@@ -121,7 +124,7 @@ def login():
             customer = usr_name
             return render_template('index.html', customer = customer)
         else:
-            print('登录失败')
+            logger.info('用户名和密码错误')
             flash('用户名和密码错误，请重试')
             return render_template('login.html')
     else:
@@ -369,4 +372,6 @@ def historyorder(argv):
 
 
 if __name__ == "__main__":
+    logger = logg.get_logger(__name__)
+    logg.dump_MySQL(True)
     app.run(debug=True)
