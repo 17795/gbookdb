@@ -110,3 +110,36 @@ input[name="branch" i] {
     width: 620px;
     font-size: 15px;
 }
+
+.mytable-for-stock {
+    color: black;
+    border: 1px solid rgb(200, 200, 200, 0.9);
+    font-size: 14px;
+    -webkit-user-select: text;
+    -user-select: text;
+    width: 100%;
+    margin: 10px;
+}
+
+.mytable-for-stock th {
+    width: 20%;
+    padding: 15px;
+    border: 2px solid black;
+    color: black;
+    background-color: rgb(200, 200, 200, 0.9);
+}
+
+.mytable-for-stock td {
+    padding: 15px;
+    color: black;
+}
+
+.mytable-for-stock tr {
+    background: rgb(255, 255, 255, 0.9);
+    color: black;
+}
+
+.mytable-for-stock tr:hover {
+    color: black;
+    background: linear-gradient(#B7D3F8, rgb(255, 255, 255, 0.9));
+}

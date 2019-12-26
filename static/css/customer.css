@@ -127,3 +127,24 @@ tr {
 tr:hover {
     background: linear-gradient(#B7D3F8, rgb(255, 255, 255, 0.9));
 }
+
+.message-input
+{
+    color: black;
+}
+
+textarea::-webkit-input-placeholder {
+    color: black;
+}
+
+textarea:-moz-placeholder {
+    color: black;
+}
+
+textarea::-moz-placeholder {
+    color: black;
+}
+
+textarea:-ms-input-placeholder {
+    color: black;
+}

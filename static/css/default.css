@@ -157,3 +157,17 @@ input[type="submit"i]:hover {
     size: 40px;
     margin: 5px;
 }
+
+td
+{
+    -webkit-user-select: text;
+    -moz-user-select: text;
+    user-select: text;
+}
+
+.intro
+{
+    -webkit-user-select: text;
+    -moz-user-select: text;
+    user-select: text;
+}

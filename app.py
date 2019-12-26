@@ -138,7 +138,13 @@ def login():
         return render_template('login.html')
 
 
-# sql查询
+# 推荐功能（目前直接跳转到book_chart.html）
+@app.route('/recommend', methods=['GET','POST'])
+def recommend():
+    return redirect(url_for('show_book_charts'))
+
+
+# 图书查询
 @app.route('/search_book/<argv>', methods=['GET','POST'])
 def search_book(argv):
     global customer
@@ -192,15 +198,15 @@ def search_book(argv):
             session['sql_query'] = sql_query
             return render_template('query.html', ch_info=checked, query_txt=query_txt, data = data, customer = customer)
         elif search_case == 'stock':
-            sql_query = "SELECT book.Title,SUM(stock.Quantity) AS TotalStock FROM book LEFT JOIN stock ON book.ISBN = stock.ISBN WHERE (book.Title) LIKE '%"+query_txt+"%'GROUP BY Title;"
+            sql_query = "SELECT book.Title,SUM(stock.Quantity) AS TotalStock FROM book LEFT JOIN stock ON book.ISBN = stock.ISBN WHERE (book.ISBN) = '"+query_txt+"' GROUP BY Title;"
             data = select(sql_query)
             html_str = ""
             for record in data:
-                html_str += '<table> <div class="mytable">'
+                html_str += '<table class="mytable-for-stock">'
                 html_str += f'<tr><th>书名:</th><td>{record[0]}</td></tr>'
                 html_str += f'<tr><th>总库存:</th><td>{record[1]}</td></tr>'
                 html_str += "</table>"
-            return render_template('query.html', stock=checked, query_txt=query_txt, content=html_str, customer = customer)
+            return render_template('query.html', stock=checked, query_txt=query_txt, content=html_str, customer=customer)
     if 'sql_query' in session:
         return render_template('query.html', data = select(session['sql_query']), customer = customer)
     return render_template('query.html', customer = customer)
@@ -350,7 +356,7 @@ def messageorder(argv):
         html_str += f'<tr><th>回复:</th><td>{record[7]}</td></tr>'
         html_str += f'<tr><th>状态:</th><td>{record[8]}</td></tr>'
         html_str += '</div></table>'
-    html_str += '<input class="input-txt" name="message" type="text" placeholder="新留言">'
+    html_str += '<textarea class="message-input" name="message" cols="80" rows="5" placeholder="请输入留言"></textarea>'
     html_str += '<input type="submit" value="修改"></form>'
     session['MesOrderID'] = argv
     return render_template('customer.html', content = html_str, customer = customer)
