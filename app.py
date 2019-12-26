@@ -115,10 +115,11 @@ def login():
     global customer
     if request.method == 'POST':
         usr_name = request.form['usr-name']
+        account_case = request.form['account_case']
         pw1 = request.form['pw1'].encode("utf-8")
         sql_query = "SELECT Password FROM customer WHERE CustomerName = '"+usr_name+"';"  
         tmp = select(sql_query)
-        if usr_name == 'admin':
+        if account_case == 'admin':
             print('管理员登录')
             return render_template('manage_book.html', var = 'begin')
         if len(tmp) == 0:
@@ -291,8 +292,9 @@ def Customer(argv):
         return render_template('customer.html', content = html_str, customer = customer)
     elif argv == "changepw":
         html_str = '<form class="top-info" action="/customer/changepw" method="POST">'
-        html_str += f'<div class="input-wrap"><input class="input-txt" type="password" name="newpw1" placeholder="请输入原密码"></div>'
-        html_str += f'<div class="input-wrap"><input class="input-txt" type="password" name="newpw2" placeholder="请输入新密码"></div>'
+        html_str += f'<div class="input-wrap"><input class="input-txt" type="password" name="newpw" placeholder="请输入原密码"></div>'
+        html_str += f'<div class="input-wrap"><input class="input-txt" type="password" name="newpw1" placeholder="请输入新密码"></div>'
+        html_str += f'<div class="input-wrap"><input class="input-txt" type="password" name="newpw2" placeholder="请确认新密码"></div>'
         html_str += f'<input type="submit" value="修改密码">'
         html_str += f'</form>'
         if request.method == 'POST':
